@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns="http://www.w3.org/1999/html" lang="en">
+
+<head th:replace="/fragments/head :: header">
+    <title>Error</title>
+</head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
+    <div class="d-flex align-items-center justify-content-center" style="height: 650px">
+        <div class="text-center">
+            <div class="row d-flex mt-1">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <h1 class="display-1 fw-bold">OOPS!</h1>
+                    <br><br>
+                    <p class="fs-3 text-danger" th:text="${message}"></p>
+                    <br><br><br>
+                    <div class="justify-content-center">
+                        <a href="javascript:history.back()" class="btn btn-primary">Go Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="/fragments/javascript :: js"></div>
+</body>
+
+</html>
