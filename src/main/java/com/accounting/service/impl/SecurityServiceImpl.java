@@ -1,4 +1,4 @@
-package com.accounting.service.implementation;
+package com.accounting.service.impl;
 
 import com.accounting.entity.User;
 import com.accounting.entity.common.UserPrincipal;
