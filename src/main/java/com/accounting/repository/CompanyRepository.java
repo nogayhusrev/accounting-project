@@ -1,9 +1,11 @@
 package com.accounting.repository;
 
 import com.accounting.entity.Company;
-import org.hibernate.metamodel.model.convert.spi.JpaAttributeConverter;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface CompanyRepository extends JpaAttributeConverter<Company, Long> {
+@Repository
+public interface CompanyRepository extends JpaRepository<Company, Long> {
 
 
 }

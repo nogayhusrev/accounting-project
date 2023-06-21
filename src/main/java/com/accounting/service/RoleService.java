@@ -1,10 +1,11 @@
 package com.accounting.service;
 
 import com.accounting.dto.RoleDto;
+import com.accounting.service.common.CrudService;
 
 import java.util.List;
 
-public interface RoleService {
+public interface RoleService extends CrudService<RoleDto, Long> {
 
     RoleDto findRoleById(Long id);
 

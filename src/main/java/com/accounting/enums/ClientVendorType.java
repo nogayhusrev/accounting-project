@@ -1,5 +1,9 @@
 package com.accounting.enums;
 
+
+import lombok.Getter;
+
+@Getter
 public enum ClientVendorType {
     CLIENT("Client"),
     VENDOR("Vendor");

@@ -26,8 +26,33 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDto> getRolesForCurrentUser() {
+
         return null;
     }
 
 
+    @Override
+    public RoleDto findById(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public List<RoleDto> findAll() {
+        return null;
+    }
+
+    @Override
+    public RoleDto save(RoleDto roleDto) {
+        return null;
+    }
+
+    @Override
+    public void delete(RoleDto roleDto) {
+
+    }
+
+    @Override
+    public void update(RoleDto roleDto) {
+
+    }
 }

@@ -56,10 +56,10 @@
                                                                 </thead>
                                                                 <tbody>
                                                                 <tr th:each="company,comStat : ${companies}"
-                                                                    th:style="${company.companyStatus.value} == 'Passive' ? 'background-color: #fcd7d7' : 'background-color: #eee'">
+                                                                    th:style="${company.companyStatus.getValue()} == 'Passive' ? 'background-color: #fcd7d7' : 'background-color: #eee'">
                                                                     <td th:text="${comStat.count}"></td>
                                                                     <td th:text="${company.title}"></td>
-                                                                    <td th:text="${company.webSite}"></td>
+                                                                    <td th:text="${company.website}"></td>
                                                                     <td th:text="${company.phone}"></td>
                                                                     <td th:text="${company.address.city}"></td>
                                                                     <td th:text="${company.address.state}"></td>
