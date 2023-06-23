@@ -1,38 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-    <div th:fragment="header">
-        <div class="dashboard-header">
-            <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" th:href="@{/dashboard}"><img th:src="@{/images/logo.png}" /></a>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent" sec:authorize="isAuthenticated()">
-                    <ul class="navbar-nav ml-auto navbar-right-top">
-                        <li class="nav-item dropdown connection">
-                            <a class="nav-link" th:href="@{/dashboard}"><i class="fas fa-home"></i></a>
-                        </li>
-                        <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <img src="/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"/>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
-                                 aria-labelledby="navbarDropdownMenuLink2">
-                                <div class="nav-user-info">
-                                    <h6 class="mb-0 text-white nav-user-name" sec:authentication="name"></h6>
-                                    <span class="status"></span>
-                                </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
-                                <a class="dropdown-item" th:href="@{/logout}"><i class="fas fa-power-off mr-2"></i>Logout</a>
+
+<div th:fragment="header">
+    <div class="dashboard-header">
+        <nav class="navbar navbar-expand-lg bg-white fixed-top">
+            <a class="navbar-brand">
+                <img th:src="@{/images/logo.png}"
+                     height="45"
+                     alt="JSOFT Admin"/>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto navbar-right-top">
+                    <li class="nav-item dropdown connection">
+                        <a class="nav-link" th:href="@{/dashboard}">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown nav-user">
+                        <a class="nav-link nav-user-img"
+                           href="#"
+                           id="navbarDropdownMenuLink2"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            <img th:src="@{/images/user.png}"
+                                 alt=""
+                                 class="user-avatar-md rounded-circle"/>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
+                             aria-labelledby="navbarDropdownMenuLink2">
+
+                            <div class="nav-user-info">
+                                <h5 class="mb-0 text-white nav-user-name"></h5>
+                                <span class="status"></span>
+                                <span class="ml-2">Available</span>
                             </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
+                            <a class="dropdown-item" th:href="@{/logout}"><i
+                                    class="fas fa-power-off mr-2"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
+</div>
+
 </body>
 
 </html>
