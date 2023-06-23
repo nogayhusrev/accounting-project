@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="fragments/head :: header"></head>
+<head th:replace="/fragments/head :: header"></head>
 
 <body>
 <div class="dashboard-main-wrapper">
-    <div th:replace="fragments/header :: header"></div>
-    <div th:replace="fragments/left-sidebar :: left-sidebar"></div>
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
     <div class="dashboard-wrapper">
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
@@ -67,7 +67,6 @@
                                                             </tr>
                                                             </tbody>
                                                         </table>
-                                                        <div class="alert alert-danger text-center" role="alert" th:text="${error}" th:if="${error}"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,8 +92,8 @@
         </div>
     </div>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
-<div th:replace="fragments/javascript :: js"></div>
+<div th:replace="/fragments/footer :: footer"></div>
+<div th:replace="/fragments/javascript :: js"></div>
 </body>
 
 </html>

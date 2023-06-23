@@ -1,9 +1,12 @@
 package com.accounting.service.impl;
 
+import com.accounting.dto.UserDto;
 import com.accounting.entity.User;
 import com.accounting.entity.common.UserPrincipal;
 import com.accounting.repository.UserRepository;
 import com.accounting.service.SecurityService;
+import com.accounting.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,8 +16,11 @@ import org.springframework.stereotype.Service;
 public class SecurityServiceImpl implements SecurityService {
     private final UserRepository userRepository;
 
-    public SecurityServiceImpl(UserRepository userRepository) {
+    private final UserService userService;
+
+    public SecurityServiceImpl(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -26,5 +32,12 @@ public class SecurityServiceImpl implements SecurityService {
 
         return new UserPrincipal(user);
 
+    }
+
+    @Override
+    public UserDto getCurrentUser() {
+
+
+        return userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }

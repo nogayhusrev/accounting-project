@@ -23,26 +23,34 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto findById(Long id) {
-        return null;
+        throw new IllegalStateException();
     }
 
     @Override
     public List<AddressDto> findAll() {
-        return null;
+        throw new IllegalStateException();
     }
 
     @Override
-    public AddressDto save(AddressDto data) {
-        return null;
+    public void save(AddressDto data) {
+        throw new IllegalStateException();
     }
 
     @Override
     public void delete(AddressDto data) {
+        throw new IllegalStateException();
 
     }
 
     @Override
-    public void update(AddressDto data) {
+    public void update(AddressDto data, Long id) {
+        throw new IllegalStateException();
+
+    }
+
+    @Override
+    public boolean isExist(AddressDto addressDto) {
+        throw new IllegalStateException();
 
     }
 }

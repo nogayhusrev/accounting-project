@@ -2,9 +2,11 @@ package com.accounting.service.impl;
 
 
 import com.accounting.dto.CompanyDto;
+import com.accounting.enums.CompanyStatus;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.CompanyRepository;
 import com.accounting.service.CompanyService;
+import com.accounting.service.UserService;
 import org.springframework.stereotype.Service;
 import com.accounting.entity.Company;
 
@@ -19,9 +21,12 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final MapperUtil mapperUtil;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, MapperUtil mapperUtil) {
+    private final UserService userService;
+
+    public CompanyServiceImpl(CompanyRepository companyRepository, MapperUtil mapperUtil, UserService userService) {
         this.companyRepository = companyRepository;
         this.mapperUtil = mapperUtil;
+        this.userService = userService;
     }
 
 
@@ -41,8 +46,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDto save(CompanyDto companyDto) {
-        return null;
+    public void save(CompanyDto companyDto) {
+        companyDto.setCompanyStatus(CompanyStatus.PASSIVE);
+        companyRepository.save(mapperUtil.convert(companyDto, new Company()));
+
     }
 
     @Override
@@ -51,7 +58,50 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void update(CompanyDto companyDto) {
+    public void update(CompanyDto companyDto, Long id) {
+
+        Company savedCompany = companyRepository.findById(id).get();
+        companyDto.setId(id);
+        companyDto.setCompanyStatus(savedCompany.getCompanyStatus());
+        companyDto.getAddress().setId(savedCompany.getAddress().getId());
+        companyDto.getAddress().setCountry(savedCompany.getAddress().getCountry());
+        Company updatedCompany = mapperUtil.convert(companyDto, new Company());
+
+        companyRepository.save(updatedCompany);
 
     }
+
+    @Override
+    public boolean isExist(CompanyDto companyDto) {
+        return companyRepository.findByTitle(companyDto.getTitle()) != null;
+    }
+
+    @Override
+    public void activate(Long companyId) {
+        Company company = companyRepository.findById(companyId).get();
+        company.setCompanyStatus(CompanyStatus.ACTIVE);
+        companyRepository.save(company);
+    }
+
+    @Override
+    public void deactivate(Long companyId) {
+        Company company = companyRepository.findById(companyId).get();
+        company.setCompanyStatus(CompanyStatus.PASSIVE);
+        companyRepository.save(company);
+    }
+
+    @Override
+    public List<CompanyDto> getCompaniesForCurrentUser() {
+        List<Company> companies;
+        if (userService.getCurrentUser().getRole().getDescription().equals("Root User")){
+            companies = companyRepository.findAll();
+        }else {
+            companies = companyRepository.findAll().stream()
+                    .filter(company -> company.getTitle().equals(userService.getCurrentUser().getCompany().getTitle()))
+                    .collect(Collectors.toList());
+        }
+
+        return companies.stream().map(company -> mapperUtil.convert(company, new CompanyDto())).collect(Collectors.toList());
+    }
+
 }
