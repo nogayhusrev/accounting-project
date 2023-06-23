@@ -62,8 +62,12 @@ public class UserServiceImpl implements UserService {
                 .sorted(Comparator.comparing((User u) -> u.getCompany().getTitle()).thenComparing(u -> u.getRole().getDescription()))
                 .map(user -> mapperUtil.convert(user,new UserDto()))
                 .map(userDto -> {
-                    userDto.setIsOnlyAdmin(isOnlyAdmin(userDto));
-                     return userDto;
+                    if (userDto.getRole().getDescription().equalsIgnoreCase("Admin") && adminCount(userDto) == 1)
+                        userDto.setIsOnlyAdmin(true);
+                    else
+                        userDto.setIsOnlyAdmin(false);
+
+                    return userDto;
                 })
                 .collect(Collectors.toList());
 
@@ -91,14 +95,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isExist(UserDto userDto) {
-        throw new IllegalStateException();
+        return findAll().stream().filter(userDto1 -> userDto1.getUsername().equals(userDto.getUsername())).count() > 0;
     }
 
 
-    private boolean isOnlyAdmin(UserDto userDto) {
-        return userRepository.findAllByCompany(mapperUtil.convert(userDto.getCompany(), new Company())).stream()
+    private int adminCount(UserDto userDto) {
+        return (int) userRepository.findAllByCompany(mapperUtil.convert(userDto.getCompany(), new Company())).stream()
                 .filter(user -> user.getRole().getDescription().equals("Admin"))
-                .count() == 1 ;
+                .count();
     }
 
 
