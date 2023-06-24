@@ -85,12 +85,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(UserDto userDto) {
-        throw new IllegalStateException();
+
+        User user = mapperUtil.convert(userDto, new User());
+        user.setUsername(user.getUsername() + "-" + user.getId());
+
+        user.setIsDeleted(true);
+        userRepository.save(user);
     }
 
     @Override
     public void update(UserDto userDto, Long id) {
-        throw new IllegalStateException();
+        User user = userRepository.findUserById(id);
+        userDto.setId(user.getId());
+        save(userDto);
     }
 
     @Override

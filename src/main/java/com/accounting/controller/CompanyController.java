@@ -75,7 +75,7 @@ public class CompanyController {
 
         if (bindingResult.hasErrors()) {
             companyDto.setId(companyId);
-            return "company/company-update";
+            return "redirect:/companies/update/" + companyId;
         }
 
         companyService.update(companyDto, companyId);

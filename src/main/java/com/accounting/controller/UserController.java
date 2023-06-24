@@ -1,6 +1,7 @@
 package com.accounting.controller;
 
 
+import com.accounting.dto.CompanyDto;
 import com.accounting.dto.UserDto;
 import com.accounting.service.CompanyService;
 import com.accounting.service.RoleService;
@@ -8,10 +9,7 @@ import com.accounting.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -68,4 +66,35 @@ public class UserController {
         return "redirect:/users/list";
 
     }
+
+    @GetMapping("/update/{userId}")
+    public String update(@PathVariable Long userId, Model model){
+
+        model.addAttribute("user",userService.findById(userId));
+        model.addAttribute("userRoles", roleService.getRolesForCurrentUser());
+        model.addAttribute("companies", companyService.getCompaniesForCurrentUser());
+
+        return "/user/user-update";
+
+    }
+
+    @PostMapping("/update/{userId}")
+    public String update(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, @PathVariable Long userId, Model model) throws CloneNotSupportedException {
+
+
+        if (bindingResult.hasErrors()) {
+            userDto.setId(userId);
+            return "redirect:/users/update/" + userId;
+        }
+
+        userService.update(userDto, userId);
+        return "redirect:/users/list";
+    }
+
+    @GetMapping("/delete/{userId}")
+    public String deleteUser(@PathVariable("userId") Long userId){
+        userService.delete(userService.findById(userId));
+        return "redirect:/users/list";
+    }
+
 }

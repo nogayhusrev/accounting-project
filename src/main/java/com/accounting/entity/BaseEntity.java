@@ -34,7 +34,7 @@ public class BaseEntity {
     @Column(nullable = false)
     private Long lastUpdateUserId;
 
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
 
 }
