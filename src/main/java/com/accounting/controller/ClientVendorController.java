@@ -8,10 +8,7 @@ import com.accounting.service.ClientVendorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -68,4 +65,36 @@ public class ClientVendorController {
         return "redirect:/clientVendors/list";
 
     }
+
+    @GetMapping("/update/{clientVendorId}")
+    public String update(@PathVariable("clientVendorId") Long clientVendorId, Model model){
+
+        model.addAttribute("clientVendor",clientVendorService.findById(clientVendorId));
+        model.addAttribute("clientVendorTypes", new ArrayList<ClientVendorType>(Arrays.asList(ClientVendorType.CLIENT,ClientVendorType.VENDOR)));
+
+
+        return "/clientVendor/clientVendor-update";
+
+    }
+
+    @PostMapping("/update/{clientVendorId}")
+    public String update(@Valid @ModelAttribute("clientVendorId") ClientVendorDto clientVendorDto, BindingResult bindingResult, @PathVariable Long clientVendorId, Model model) throws CloneNotSupportedException {
+
+
+
+        if (bindingResult.hasErrors()) {
+            clientVendorDto.setId(clientVendorId);
+            return "redirect:/clientVendors/update/" + clientVendorId;
+        }
+
+        clientVendorService.update(clientVendorDto, clientVendorId);
+        return "redirect:/clientVendors/list";
+    }
+
+    @GetMapping("/delete/{clientVendorId}")
+    public String deleteUser(@PathVariable("clientVendorId") Long clientVendorId){
+        clientVendorService.delete(clientVendorService.findById(clientVendorId));
+        return "redirect:/clientVendors/list";
+    }
+
 }

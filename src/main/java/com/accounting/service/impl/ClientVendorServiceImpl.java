@@ -2,6 +2,8 @@ package com.accounting.service.impl;
 
 import com.accounting.dto.ClientVendorDto;
 import com.accounting.entity.ClientVendor;
+import com.accounting.entity.Company;
+import com.accounting.entity.User;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.ClientVendorRepository;
 import com.accounting.service.ClientVendorService;
@@ -25,8 +27,8 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
-    public ClientVendorDto findById(Long aLong) {
-        throw new IllegalStateException("Illegal Method Call");
+    public ClientVendorDto findById(Long clientVendorId) {
+        return mapperUtil.convert(clientVendorRepository.findById(clientVendorId).get(), new ClientVendorDto());
     }
 
     @Override
@@ -45,12 +47,23 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public void delete(ClientVendorDto clientVendorDto) {
-        throw new IllegalStateException("Illegal Method Call");
+        ClientVendor clientVendor = mapperUtil.convert(clientVendorDto, new ClientVendor());
+        clientVendor.setClientVendorName(clientVendor.getClientVendorName() + "-" + clientVendor.getId());
+
+        clientVendor.setIsDeleted(true);
+        clientVendorRepository.save(clientVendor);
     }
 
     @Override
-    public void update(ClientVendorDto clientVendorDto, Long aLong) {
-        throw new IllegalStateException("Illegal Method Call");
+    public void update(ClientVendorDto clientVendorDto, Long clientVendorId) {
+
+
+        clientVendorDto.setId(clientVendorId);
+
+        ClientVendor updatedClientVendor = mapperUtil.convert(clientVendorDto, new ClientVendor());
+
+        clientVendorRepository.save(updatedClientVendor);
+
     }
 
     @Override
