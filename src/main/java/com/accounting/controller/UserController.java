@@ -50,14 +50,17 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("newUser") UserDto userDto, BindingResult bindingResult) {
+    public String create(@Valid @ModelAttribute("newUser") UserDto userDto, BindingResult bindingResult, Model model) {
 
         if (userService.isExist(userDto)) {
-            bindingResult.rejectValue("title", " ", "This title already exists.");
+            bindingResult.rejectValue("username", " ", "This username already exists.");
         }
 
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("userRoles", roleService.getRolesForCurrentUser());
+            model.addAttribute("companies", companyService.getCompaniesForCurrentUser());
+
             return "user/user-create";
         }
 
@@ -92,7 +95,7 @@ public class UserController {
     }
 
     @GetMapping("/delete/{userId}")
-    public String deleteUser(@PathVariable("userId") Long userId){
+    public String delete(@PathVariable("userId") Long userId){
         userService.delete(userService.findById(userId));
         return "redirect:/users/list";
     }

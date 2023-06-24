@@ -27,7 +27,7 @@ values ('2022-09-15 00:00:00', 1, false, '2022-09-15 00:00:00', 1,
 insert into companies(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
                       title, phone, website, address_id, company_status)
 values ('2022-09-15 00:00:00', 1, false, '2022-09-15 00:00:00', 1,
-        'CYDEO','+1 (652) 852-8888', 'https://www.cydeo.com', 1, 'ACTIVE'),
+        'NGY','+1 (652) 852-8888', 'https://www.ngy.com', 1, 'ACTIVE'),
        ('2022-09-15 00:00:00', 1, false, '2022-09-15 00:00:00', 1,
         'Green Tech','+1 (652) 852-3246', 'https://www.greentech.com', 2, 'ACTIVE'),
        ('2022-09-15 00:00:00', 1, false, '2022-09-15 00:00:00', 1,

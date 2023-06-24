@@ -31,8 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
-    public CompanyDto findById(Long id) {
-        return mapperUtil.convert(companyRepository.findById(id).get(),new CompanyDto());
+    public CompanyDto findById(Long companyId) {
+        return mapperUtil.convert(companyRepository.findById(companyId).get(),new CompanyDto());
     }
 
     @Override
@@ -54,14 +54,14 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void delete(CompanyDto companyDto) {
-
+        throw new IllegalStateException("Not Implemented");
     }
 
     @Override
-    public void update(CompanyDto companyDto, Long id) {
+    public void update(CompanyDto companyDto, Long companyId) {
 
-        Company savedCompany = companyRepository.findById(id).get();
-        companyDto.setId(id);
+        Company savedCompany = companyRepository.findById(companyId).get();
+        companyDto.setId(companyId);
         companyDto.setCompanyStatus(savedCompany.getCompanyStatus());
         companyDto.getAddress().setId(savedCompany.getAddress().getId());
         companyDto.getAddress().setCountry(savedCompany.getAddress().getCountry());

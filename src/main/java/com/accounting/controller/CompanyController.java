@@ -56,22 +56,18 @@ public class CompanyController {
 
     }
 
-    @GetMapping("/update/{id}")
-    public String update(@PathVariable("id") Long id,Model model){
+    @GetMapping("/update/{companyId}")
+    public String update(@PathVariable("companyId") Long companyId,Model model){
 
-        model.addAttribute("company",companyService.findById(id));
+        model.addAttribute("company",companyService.findById(companyId));
 
         return "/company/company-update";
 
     }
 
     @PostMapping("/update/{companyId}")
-    public String update(@Valid @ModelAttribute("company") CompanyDto companyDto, BindingResult bindingResult, @PathVariable Long companyId, Model model) throws CloneNotSupportedException {
+    public String update(@Valid @ModelAttribute("company") CompanyDto companyDto, BindingResult bindingResult, @PathVariable Long companyId) throws CloneNotSupportedException {
 
-
-        if (companyService.isExist(companyDto)) {
-            bindingResult.rejectValue("title", " ", "This title already exists.");
-        }
 
         if (bindingResult.hasErrors()) {
             companyDto.setId(companyId);

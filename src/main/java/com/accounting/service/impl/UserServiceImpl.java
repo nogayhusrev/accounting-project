@@ -34,8 +34,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto findById(Long id) {
-        return mapperUtil.convert(userRepository.findUserById(id), new UserDto());
+    public UserDto findById(Long userId) {
+        return mapperUtil.convert(userRepository.findUserById(userId), new UserDto());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         }
         return userList.stream()
                 .sorted(Comparator.comparing((User u) -> u.getCompany().getTitle()).thenComparing(u -> u.getRole().getDescription()))
-                .map(user -> mapperUtil.convert(user,new UserDto()))
+                .map(user -> mapperUtil.convert(user, new UserDto()))
                 .map(userDto -> {
                     if (userDto.getRole().getDescription().equalsIgnoreCase("Admin") && adminCount(userDto) == 1)
                         userDto.setIsOnlyAdmin(true);
@@ -87,15 +87,15 @@ public class UserServiceImpl implements UserService {
     public void delete(UserDto userDto) {
 
         User user = mapperUtil.convert(userDto, new User());
-        user.setUsername(user.getUsername() + "-" + user.getId());
+        user.setUsername(user.getUsername() + "-" + user.getId() + " DELETED");
 
         user.setIsDeleted(true);
         userRepository.save(user);
     }
 
     @Override
-    public void update(UserDto userDto, Long id) {
-        User user = userRepository.findUserById(id);
+    public void update(UserDto userDto, Long userId) {
+        User user = userRepository.findUserById(userId);
         userDto.setId(user.getId());
         save(userDto);
     }

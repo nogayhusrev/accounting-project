@@ -49,7 +49,7 @@ public class ClientVendorController {
     public String create(@Valid @ModelAttribute("newClientVendor") ClientVendorDto clientVendorDto, BindingResult bindingResult, Model model) {
 
         if (clientVendorService.isExist(clientVendorDto)) {
-            bindingResult.rejectValue("clientVendorName", " ", "This title already exists.");
+            bindingResult.rejectValue("clientVendorName", " ", "This Name already exists.");
         }
 
 
@@ -78,7 +78,7 @@ public class ClientVendorController {
     }
 
     @PostMapping("/update/{clientVendorId}")
-    public String update(@Valid @ModelAttribute("clientVendorId") ClientVendorDto clientVendorDto, BindingResult bindingResult, @PathVariable Long clientVendorId, Model model) throws CloneNotSupportedException {
+    public String update(@Valid @ModelAttribute("clientVendorId") ClientVendorDto clientVendorDto, BindingResult bindingResult, @PathVariable Long clientVendorId) throws CloneNotSupportedException {
 
 
 
@@ -92,7 +92,7 @@ public class ClientVendorController {
     }
 
     @GetMapping("/delete/{clientVendorId}")
-    public String deleteUser(@PathVariable("clientVendorId") Long clientVendorId){
+    public String delete(@PathVariable("clientVendorId") Long clientVendorId){
         clientVendorService.delete(clientVendorService.findById(clientVendorId));
         return "redirect:/clientVendors/list";
     }

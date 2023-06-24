@@ -32,8 +32,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDto findById(Long id) {
-        return mapperUtil.convert(roleRepository.findRoleById(id),new RoleDto());
+    public RoleDto findById(Long roleId) {
+        return mapperUtil.convert(roleRepository.findRoleById(roleId),new RoleDto());
     }
 
     @Override
@@ -57,31 +57,30 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDto> findAll() {
-        throw new IllegalStateException();
-
+        throw new IllegalStateException("Not Implemented");
     }
 
     @Override
     public void save(RoleDto roleDto) {
-        throw new IllegalStateException();
+        throw new IllegalStateException("Not Implemented");
 
     }
 
     @Override
     public void delete(RoleDto roleDto) {
-        throw new IllegalStateException();
+        throw new IllegalStateException("Not Implemented");
 
     }
 
     @Override
-    public void update(RoleDto roleDto, Long id) {
-        throw new IllegalStateException();
+    public void update(RoleDto roleDto, Long roleId) {
+        throw new IllegalStateException("Not Implemented");
 
     }
 
     @Override
     public boolean isExist(RoleDto roleDto) {
-        throw new IllegalStateException();
+        throw new IllegalStateException("Not Implemented");
 
     }
 }

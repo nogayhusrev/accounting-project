@@ -48,7 +48,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public void delete(ClientVendorDto clientVendorDto) {
         ClientVendor clientVendor = mapperUtil.convert(clientVendorDto, new ClientVendor());
-        clientVendor.setClientVendorName(clientVendor.getClientVendorName() + "-" + clientVendor.getId());
+        clientVendor.setClientVendorName(clientVendor.getClientVendorName() + "-" + clientVendor.getId() + " DELETED");
 
         clientVendor.setIsDeleted(true);
         clientVendorRepository.save(clientVendor);
