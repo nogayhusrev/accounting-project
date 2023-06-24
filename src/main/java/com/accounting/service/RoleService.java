@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface RoleService extends CrudService<RoleDto, Long> {
 
-    RoleDto findRoleById(Long id);
-
     List<RoleDto> getRolesForCurrentUser();
 }

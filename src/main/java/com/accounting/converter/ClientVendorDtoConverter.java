@@ -1,7 +1,8 @@
 package com.accounting.converter;
 
+import com.accounting.dto.ClientVendorDto;
 import com.accounting.dto.RoleDto;
-import com.accounting.service.RoleService;
+import com.accounting.service.ClientVendorService;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.converter.Converter;
@@ -9,21 +10,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationPropertiesBinding
-public class RoleDtoConverter implements Converter<String, RoleDto> {
+public class ClientVendorDtoConverter implements Converter<String, ClientVendorDto> {
 
-    private final RoleService roleService;
+    private final ClientVendorService clientVendorService;
 
-    public RoleDtoConverter(@Lazy RoleService roleService) {
-        this.roleService = roleService;
+    public ClientVendorDtoConverter(@Lazy ClientVendorService clientVendorService) {
+        this.clientVendorService = clientVendorService;
     }
 
-//    @SneakyThrows
     @Override
-    public RoleDto convert(String id){
+    public ClientVendorDto convert(String id){
         // it throws error if user selects "Select" even with @SneakyThrows
         if (id == null || id.isBlank())
             return null;
-        return roleService.findById(Long.parseLong(id));
+        return clientVendorService.findById(Long.parseLong(id));
     }
 
 }

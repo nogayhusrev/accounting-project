@@ -32,7 +32,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDto findRoleById(Long id) {
+    public RoleDto findById(Long id) {
         return mapperUtil.convert(roleRepository.findRoleById(id),new RoleDto());
     }
 
@@ -54,10 +54,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
 
-    @Override
-    public RoleDto findById(Long aLong) {
-        throw new IllegalStateException();
-    }
 
     @Override
     public List<RoleDto> findAll() {
