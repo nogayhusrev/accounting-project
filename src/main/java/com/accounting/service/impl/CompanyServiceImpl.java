@@ -73,7 +73,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public boolean isExist(CompanyDto companyDto) {
-        return companyRepository.findByTitle(companyDto.getTitle()) != null;
+        return findAll().stream().filter(savedCompany -> savedCompany.getTitle().equalsIgnoreCase(companyDto.getTitle())).count() > 0;
     }
 
     @Override

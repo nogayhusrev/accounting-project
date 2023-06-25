@@ -62,11 +62,7 @@ public class UserServiceImpl implements UserService {
                 .sorted(Comparator.comparing((User u) -> u.getCompany().getTitle()).thenComparing(u -> u.getRole().getDescription()))
                 .map(user -> mapperUtil.convert(user, new UserDto()))
                 .map(userDto -> {
-                    if (userDto.getRole().getDescription().equalsIgnoreCase("Admin") && adminCount(userDto) == 1)
-                        userDto.setIsOnlyAdmin(true);
-                    else
-                        userDto.setIsOnlyAdmin(false);
-
+                    isOnlyAdmin(userDto);
                     return userDto;
                 })
                 .collect(Collectors.toList());
@@ -112,5 +108,12 @@ public class UserServiceImpl implements UserService {
                 .count();
     }
 
+
+    private void isOnlyAdmin(UserDto userDto) {
+        if (userDto.getRole().getDescription().equalsIgnoreCase("Admin") && adminCount(userDto) == 1)
+            userDto.setIsOnlyAdmin(true);
+        else
+            userDto.setIsOnlyAdmin(false);
+    }
 
 }

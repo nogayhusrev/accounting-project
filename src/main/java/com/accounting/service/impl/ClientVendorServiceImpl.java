@@ -6,7 +6,6 @@ import com.accounting.entity.Company;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.ClientVendorRepository;
 import com.accounting.service.ClientVendorService;
-import com.accounting.service.SecurityService;
 import com.accounting.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +19,13 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     private final ClientVendorRepository clientVendorRepository;
     private final MapperUtil mapperUtil;
     private final UserService userService;
-    private final SecurityService securityService;
 
-    public ClientVendorServiceImpl(ClientVendorRepository clientVendorRepository, MapperUtil mapperUtil, UserService userService, SecurityService securityService) {
+    public ClientVendorServiceImpl(ClientVendorRepository clientVendorRepository, MapperUtil mapperUtil, UserService userService) {
         this.clientVendorRepository = clientVendorRepository;
         this.mapperUtil = mapperUtil;
         this.userService = userService;
-        this.securityService = securityService;
     }
+
 
     @Override
     public ClientVendorDto findById(Long clientVendorId) {
@@ -36,7 +34,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public List<ClientVendorDto> findAll() {
-        Company company = mapperUtil.convert(securityService.getCurrentUser().getCompany(), new Company());
+        Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
         return clientVendorRepository
                 .findAllByCompany(company)
                 .stream()
@@ -56,7 +54,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public void delete(ClientVendorDto clientVendorDto) {
         ClientVendor clientVendor = mapperUtil.convert(clientVendorDto, new ClientVendor());
-        clientVendor.setClientVendorName(clientVendor.getClientVendorName() + "-" + clientVendor.getId() + " DELETED");
+        clientVendor.setClientVendorName(clientVendor.getClientVendorName() + "_" + clientVendor.getId() + "_DELETED");
 
         clientVendor.setIsDeleted(true);
         clientVendorRepository.save(clientVendor);
@@ -76,7 +74,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public boolean isExist(ClientVendorDto clientVendorDto) {
-        return clientVendorRepository.findAll().stream()
+        return findAll().stream()
                 .filter(clientVendor -> clientVendor.getClientVendorName().equalsIgnoreCase(clientVendorDto.getClientVendorName()))
                 .count() > 0;
     }

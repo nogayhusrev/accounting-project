@@ -1,13 +1,12 @@
 package com.accounting.service.impl;
 
 import com.accounting.dto.ProductDto;
-import com.accounting.entity.Category;
 import com.accounting.entity.Company;
 import com.accounting.entity.Product;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.ProductRepository;
 import com.accounting.service.ProductService;
-import com.accounting.service.SecurityService;
+import com.accounting.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -19,12 +18,12 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final MapperUtil mapperUtil;
-    private final SecurityService securityService;
+    private final UserService userService;
 
-    public ProductServiceImpl(ProductRepository productRepository, MapperUtil mapperUtil, SecurityService securityService) {
+    public ProductServiceImpl(ProductRepository productRepository, MapperUtil mapperUtil, UserService userService) {
         this.productRepository = productRepository;
         this.mapperUtil = mapperUtil;
-        this.securityService = securityService;
+        this.userService = userService;
     }
 
 
@@ -35,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> findAll() {
-        Company company = mapperUtil.convert(securityService.getCurrentUser().getCompany(), new Company());
+        Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
         return productRepository.findAll().stream()
                 .filter(product -> product.getCategory().getCompany().getTitle().equalsIgnoreCase(company.getTitle()))
                 .sorted(Comparator.comparing((Product product) -> product.getCategory().getDescription())
@@ -46,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void save(ProductDto productDto) {
         Product product = mapperUtil.convert(productDto,new Product());
+        product.setQuantityInStock(0);
         productRepository.save(product);
 
     }
@@ -54,8 +54,11 @@ public class ProductServiceImpl implements ProductService {
     public void delete(ProductDto productDto) {
         Product product = productRepository.findById(productDto.getId()).get();
 
+        if (product.getQuantityInStock() > 0 )
+            return;
+
         product.setIsDeleted(true);
-        product.setName(product.getName() + " " + product.getId() + " DELETED");
+        product.setName(product.getName() + "_" + product.getId() + "_DELETED");
 
         productRepository.save(product);
     }
@@ -63,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void update(ProductDto productDto, Long productId) {
         productDto.setId(productId);
+        productDto.setQuantityInStock(productRepository.findById(productId).get().getQuantityInStock());
         save(productDto);
     }
 

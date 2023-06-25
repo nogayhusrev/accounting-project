@@ -6,7 +6,8 @@ import com.accounting.entity.Company;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.CategoryRepository;
 import com.accounting.service.CategoryService;
-import com.accounting.service.SecurityService;
+import com.accounting.service.ProductService;
+import com.accounting.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -20,36 +21,45 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final MapperUtil mapperUtil;
 
-    private final SecurityService securityService;
+    private final UserService userService;
+    private final ProductService productService;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, MapperUtil mapperUtil, SecurityService securityService) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, MapperUtil mapperUtil, UserService userService, ProductService productService) {
         this.categoryRepository = categoryRepository;
         this.mapperUtil = mapperUtil;
-
-        this.securityService = securityService;
+        this.userService = userService;
+        this.productService = productService;
     }
 
 
     @Override
     public CategoryDto findById(Long categoryId) {
-        return mapperUtil.convert(categoryRepository.findById(categoryId).get(),new CategoryDto());
+        return mapperUtil.convert(categoryRepository.findById(categoryId).get(), new CategoryDto());
     }
 
     @Override
     public List<CategoryDto> findAll() {
-        Company company = mapperUtil.convert(securityService.getCurrentUser().getCompany(), new Company());
+        Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
         return categoryRepository
                 .findAllByCompany(company)
                 .stream()
                 .sorted(Comparator.comparing(Category::getDescription))
-                .map(category -> mapperUtil.convert(category, new CategoryDto())).collect(Collectors.toList());
+                .map(category -> {
+
+                    CategoryDto categoryDto = mapperUtil.convert(category, new CategoryDto());
+                    if (hasProducts(category))
+                        categoryDto.setHasProduct(true);
+
+                    return categoryDto;
+
+                }).collect(Collectors.toList());
     }
 
     @Override
     public void save(CategoryDto categoryDto) {
 
         Category category = mapperUtil.convert(categoryDto, new Category());
-        Company company = mapperUtil.convert(securityService.getCurrentUser().getCompany(), new Company());
+        Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
         category.setCompany(company);
 
         categoryRepository.save(category);
@@ -60,9 +70,18 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(CategoryDto categoryDto) {
         Category category = categoryRepository.findById(categoryDto.getId()).get();
 
+        if (hasProducts(category))
+            return;
+
         category.setIsDeleted(true);
-        category.setDescription(category.getDescription() + " " + category.getId() + " DELETED");
+        category.setDescription(category.getDescription() + "_" + category.getId() + "_DELETED");
         categoryRepository.save(category);
+    }
+
+    private boolean hasProducts(Category category) {
+        return productService.findAll().stream()
+                        .filter(productDto -> productDto.getCategory().getDescription().equalsIgnoreCase(category.getDescription()))
+                        .count() > 0;
     }
 
     @Override
@@ -73,6 +92,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean isExist(CategoryDto categoryDto) {
-        return categoryRepository.findAll().stream().filter(category -> category.getDescription().equalsIgnoreCase(categoryDto.getDescription())).count() > 0;
+        return findAll().stream().filter(category -> category.getDescription().equalsIgnoreCase(categoryDto.getDescription())).count() > 0;
     }
 }
