@@ -97,21 +97,23 @@ public class PurchaseInvoiceController {
         invoiceService.update(invoiceDto, invoiceId);
         return "redirect:/purchaseInvoices/list";
     }
-//
-//    @GetMapping("/delete/{productId}")
-//    public String delete(@PathVariable("productId") Long productId){
-//        productService.delete(productService.findById(productId));
-//        return "redirect:/products/list";
-//    }
+
+    @GetMapping("/delete/{invoiceId}")
+    public String delete(@PathVariable("invoiceId") Long invoiceId){
+
+        invoiceService.delete(invoiceId);
+
+        return "redirect:/purchaseInvoices/list";
+    }
 
 
     @PostMapping("/addInvoiceProduct/{invoiceId}")
     public String addInvoiceProductToPurchaseInvoice(@Valid @ModelAttribute("newInvoiceProduct") InvoiceProductDto invoiceProductDto, @PathVariable("invoiceId") Long invoiceId, BindingResult result, Model model) {
 
-//        if (result.hasErrors()) {
-//
-//            return "redirect:/purchaseInvoices/update/" + invoiceId;
-//        }
+        if (result.hasErrors()) {
+
+            return "redirect:/purchaseInvoices/update/" + invoiceId;
+        }
 
         invoiceProductService.saveInvoiceProductByInvoiceId(invoiceProductDto, invoiceId);
 

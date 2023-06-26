@@ -51,8 +51,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(ProductDto productDto) {
-        Product product = productRepository.findById(productDto.getId()).get();
+    public void delete(Long productId) {
+        Product product = productRepository.findById(productId).get();
 
         if (product.getQuantityInStock() > 0 )
             return;
@@ -67,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
     public void update(ProductDto productDto, Long productId) {
         productDto.setId(productId);
         productDto.setQuantityInStock(productRepository.findById(productId).get().getQuantityInStock());
-        save(productDto);
+        productRepository.save(mapperUtil.convert(productDto, new Product()));
     }
 
     @Override

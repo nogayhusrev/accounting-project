@@ -53,8 +53,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void delete(CompanyDto companyDto) {
-        throw new IllegalStateException("Not Implemented");
+    public void delete(Long companyId) {
+
     }
 
     @Override

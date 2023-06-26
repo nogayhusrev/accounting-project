@@ -1,6 +1,7 @@
 package com.accounting.entity.common;
 
 import com.accounting.entity.User;
+import com.accounting.enums.CompanyStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,7 +49,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.getCompany().getCompanyStatus().equals(CompanyStatus.ACTIVE);
     }
 
     @Override

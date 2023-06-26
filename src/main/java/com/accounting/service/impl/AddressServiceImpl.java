@@ -32,25 +32,23 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void save(AddressDto data) {
+    public void save(AddressDto addressDto) {
         throw new IllegalStateException("Not Implemented");
     }
 
     @Override
-    public void delete(AddressDto data) {
-        throw new IllegalStateException("Not Implemented");
+    public void delete(Long addressId) {
 
     }
 
     @Override
     public void update(AddressDto addressDto, Long addressId) {
         throw new IllegalStateException("Not Implemented");
-
     }
 
     @Override
     public boolean isExist(AddressDto addressDto) {
-        throw new IllegalStateException("Not Implemented");
-
+        return false;
     }
+
 }

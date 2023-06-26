@@ -80,9 +80,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(UserDto userDto) {
-
-        User user = mapperUtil.convert(userDto, new User());
+    public void delete(Long userId) {
+        User user = userRepository.findById(userId).get();
         user.setUsername(user.getUsername() + "-" + user.getId() + " DELETED");
 
         user.setIsDeleted(true);
@@ -93,7 +92,7 @@ public class UserServiceImpl implements UserService {
     public void update(UserDto userDto, Long userId) {
         User user = userRepository.findUserById(userId);
         userDto.setId(user.getId());
-        save(userDto);
+        userRepository.save(mapperUtil.convert(user,new User()));
     }
 
     @Override

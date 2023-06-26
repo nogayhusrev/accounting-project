@@ -16,4 +16,5 @@ public interface InvoiceService extends CrudService<InvoiceDto, Long> {
     String generateInvoiceNo(InvoiceType invoiceType);
     InvoiceDto getNewInvoice(InvoiceType invoiceType);
     void save(InvoiceDto invoiceDto, InvoiceType invoiceType);
+
 }

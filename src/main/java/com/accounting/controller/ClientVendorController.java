@@ -93,7 +93,7 @@ public class ClientVendorController {
 
     @GetMapping("/delete/{clientVendorId}")
     public String delete(@PathVariable("clientVendorId") Long clientVendorId){
-        clientVendorService.delete(clientVendorService.findById(clientVendorId));
+        clientVendorService.delete(clientVendorId);
         return "redirect:/clientVendors/list";
     }
 

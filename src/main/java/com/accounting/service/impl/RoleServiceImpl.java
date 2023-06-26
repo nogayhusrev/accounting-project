@@ -10,7 +10,6 @@ import com.accounting.service.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,26 +32,25 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto findById(Long roleId) {
-        return mapperUtil.convert(roleRepository.findRoleById(roleId),new RoleDto());
+        return mapperUtil.convert(roleRepository.findRoleById(roleId), new RoleDto());
     }
 
     @Override
     public List<RoleDto> getRolesForCurrentUser() {
 
-        List<Role> roles ;
+        List<Role> roles;
 
-        if (userService.getCurrentUser().getRole().getDescription().equals("Root User")){
+        if (userService.getCurrentUser().getRole().getDescription().equals("Root User")) {
             roles = roleRepository.findAll().stream()
                     .filter(role -> role.getDescription().equals("Admin")).collect(Collectors.toList());
-        }else {
+        } else {
             roles = roleRepository.findAll().stream()
                     .filter(role -> !role.getDescription().equals("Root User"))
                     .collect(Collectors.toList());
         }
 
-        return roles.stream().map(role -> mapperUtil.convert(role,new RoleDto())).collect(Collectors.toList());
+        return roles.stream().map(role -> mapperUtil.convert(role, new RoleDto())).collect(Collectors.toList());
     }
-
 
 
     @Override
@@ -67,7 +65,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete(RoleDto roleDto) {
+    public void delete(Long roleId) {
         throw new IllegalStateException("Not Implemented");
 
     }

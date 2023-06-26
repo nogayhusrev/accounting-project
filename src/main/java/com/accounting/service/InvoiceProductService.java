@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface InvoiceProductService extends CrudService<InvoiceProductDto, Long> {
     List<InvoiceProductDto> findInvoiceProductsByInvoiceId(Long invoiceId);
-
     void saveInvoiceProductByInvoiceId(InvoiceProductDto invoiceProductDto, Long invoiceId);
+
 }

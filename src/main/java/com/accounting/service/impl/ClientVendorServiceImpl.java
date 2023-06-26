@@ -52,13 +52,14 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
-    public void delete(ClientVendorDto clientVendorDto) {
-        ClientVendor clientVendor = mapperUtil.convert(clientVendorDto, new ClientVendor());
+    public void delete(Long clientVendorId) {
+        ClientVendor clientVendor = clientVendorRepository.findById(clientVendorId).get();
         clientVendor.setClientVendorName(clientVendor.getClientVendorName() + "_" + clientVendor.getId() + "_DELETED");
 
         clientVendor.setIsDeleted(true);
         clientVendorRepository.save(clientVendor);
     }
+
 
     @Override
     public void update(ClientVendorDto clientVendorDto, Long clientVendorId) {

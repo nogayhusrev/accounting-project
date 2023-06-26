@@ -57,18 +57,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void save(CategoryDto categoryDto) {
-
         Category category = mapperUtil.convert(categoryDto, new Category());
         Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
         category.setCompany(company);
 
         categoryRepository.save(category);
-
     }
 
     @Override
-    public void delete(CategoryDto categoryDto) {
-        Category category = categoryRepository.findById(categoryDto.getId()).get();
+    public void delete(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).get();
 
         if (hasProducts(category))
             return;
@@ -77,6 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setDescription(category.getDescription() + "_" + category.getId() + "_DELETED");
         categoryRepository.save(category);
     }
+
 
     private boolean hasProducts(Category category) {
         return productService.findAll().stream()
@@ -87,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void update(CategoryDto categoryDto, Long categoryId) {
         categoryDto.setId(categoryId);
-        save(categoryDto);
+        categoryRepository.save(mapperUtil.convert(categoryDto,new Category()));
     }
 
     @Override

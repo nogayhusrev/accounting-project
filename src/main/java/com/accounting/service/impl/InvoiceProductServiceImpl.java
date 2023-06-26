@@ -63,9 +63,10 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         invoiceProductRepository.save(mapperUtil.convert(invoiceProductDto, new InvoiceProduct()));
     }
 
-    @Override
-    public void delete(InvoiceProductDto invoiceProductDto) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+    public void delete(Long invoiceProductId) {
+        InvoiceProduct invoiceProduct = invoiceProductRepository.findById(invoiceProductId).get();
+        invoiceProduct.setIsDeleted(true);
+        invoiceProductRepository.save(invoiceProduct);
     }
 
     @Override

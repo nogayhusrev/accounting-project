@@ -11,14 +11,15 @@ import com.accounting.enums.InvoiceType;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.InvoiceRepository;
 import com.accounting.service.ClientVendorService;
+import com.accounting.service.InvoiceProductService;
 import com.accounting.service.InvoiceService;
 import com.accounting.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,12 +30,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final MapperUtil mapperUtil;
     private final UserService userService;
     private final ClientVendorService clientVendorService;
+    private final InvoiceProductService invoiceProductService;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, UserService userService, ClientVendorService clientVendorService) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, UserService userService, ClientVendorService clientVendorService,@Lazy InvoiceProductService invoiceProductService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.userService = userService;
         this.clientVendorService = clientVendorService;
+        this.invoiceProductService = invoiceProductService;
     }
 
 
@@ -62,7 +65,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         return findAll().stream()
                 .filter(invoice -> invoice.getInvoiceType().getValue().equals(InvoiceType.PURCHASE.getValue()))
                 .map(invoiceDto -> {
-                    invoiceDto.setInvoiceProducts(new ArrayList<>());
+                    invoiceDto.setInvoiceProducts(invoiceProductService.findInvoiceProductsByInvoiceId(invoiceDto.getId()));
                     return invoiceDto;
                 })
                 .collect(Collectors.toList());
@@ -73,7 +76,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         return findAll().stream()
                 .filter(invoice -> invoice.getInvoiceType().getValue().equals(InvoiceType.SALES.getValue()))
                 .map(invoiceDto -> {
-                    invoiceDto.setInvoiceProducts(new ArrayList<>());
+                    invoiceDto.setInvoiceProducts(invoiceProductService.findInvoiceProductsByInvoiceId(invoiceDto.getId()));
                     return invoiceDto;
                 })
                 .collect(Collectors.toList());
@@ -101,9 +104,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (invoices.size() == 0) {
             return invoiceType.name().charAt(0) + "-001";
         }
-        Invoice lastCreatedInvoiceOfTheCompany = invoices.stream()
+        Invoice lastInvoiceOfTheCompany = invoices.stream()
                 .max(Comparator.comparing(Invoice::getInsertDateTime)).get();
-        int newOrder = Integer.parseInt(lastCreatedInvoiceOfTheCompany.getInvoiceNo().substring(2)) + 1;
+        int newOrder = Integer.parseInt(lastInvoiceOfTheCompany.getInvoiceNo().substring(2)) + 1;
         return invoiceType.name().charAt(0) + "-" + String.format("%03d", newOrder);
 
     }
@@ -124,7 +127,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceDto.setInvoiceType(invoiceType);
         invoiceDto.setInvoiceProducts(new ArrayList<>());
         invoiceDto.setInvoiceStatus(InvoiceStatus.AWAITING_APPROVAL);
-        save(invoiceDto);
+        invoiceDto.setCompany(userService.getCurrentUser().getCompany());
+        invoiceRepository.save(mapperUtil.convert(invoiceDto,new Invoice()));
+
     }
 
 
@@ -136,9 +141,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void delete(InvoiceDto invoiceDto) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+    public void delete(Long invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).get();
+        invoiceProductService.findInvoiceProductsByInvoiceId(invoiceId)
+                .forEach(invoiceProductDto -> invoiceProductService.delete(invoiceProductDto.getId()));
+        invoice.setIsDeleted(true);
+        invoiceRepository.save(invoice);
     }
+
 
     @Override
     public void update(InvoiceDto invoiceDto, Long invoiceId) {
