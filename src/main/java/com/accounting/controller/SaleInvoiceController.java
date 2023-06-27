@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/purchaseInvoices")
-public class PurchaseInvoiceController {
+@RequestMapping("/salesInvoices")
+public class SaleInvoiceController {
 
     private final InvoiceService invoiceService;
     private final InvoiceProductService invoiceProductService;
@@ -25,7 +25,7 @@ public class PurchaseInvoiceController {
     private final ProductService productService;
 
 
-    public PurchaseInvoiceController(InvoiceService invoiceService, InvoiceProductService invoiceProductService, ClientVendorService clientVendorService, ProductService productService) {
+    public SaleInvoiceController(InvoiceService invoiceService, InvoiceProductService invoiceProductService, ClientVendorService clientVendorService, ProductService productService) {
         this.invoiceService = invoiceService;
         this.invoiceProductService = invoiceProductService;
         this.clientVendorService = clientVendorService;
@@ -36,36 +36,36 @@ public class PurchaseInvoiceController {
     @GetMapping("/list")
     public String list(Model model) {
 
-        model.addAttribute("invoices", invoiceService.findPurchaseInvoices());
+        model.addAttribute("invoices", invoiceService.findSaleInvoices());
 
-        return "/invoice/purchase-invoice-list";
+        return "/invoice/sales-invoice-list";
     }
 
 
     @GetMapping("/create")
     public String create(Model model) {
 
-        model.addAttribute("newPurchaseInvoice", invoiceService.getNewInvoice(InvoiceType.PURCHASE));
-        model.addAttribute("vendors", invoiceService.findVendors());
+        model.addAttribute("newSalesInvoice", invoiceService.getNewInvoice(InvoiceType.SALES));
+        model.addAttribute("clients", invoiceService.findClients());
 
 
-        return "/invoice/purchase-invoice-create";
+        return "/invoice/sales-invoice-create";
 
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("newPurchaseInvoice") InvoiceDto invoiceDto, BindingResult bindingResult, Model model) {
+    public String create(@Valid @ModelAttribute("newSalesInvoice") InvoiceDto invoiceDto, BindingResult bindingResult, Model model) {
 
 
         if (bindingResult.hasErrors()) {
 
-            return "/invoice/purchase-invoice-create";
+            return "/invoice/sales-invoice-create";
         }
 
 
-        invoiceService.save(invoiceDto, InvoiceType.PURCHASE);
+        invoiceService.save(invoiceDto, InvoiceType.SALES);
 
-        return "redirect:/purchaseInvoices/list";
+        return "redirect:/salesInvoices/list";
 
     }
 
@@ -73,7 +73,7 @@ public class PurchaseInvoiceController {
     public String update(@PathVariable("invoiceId") Long invoiceId, Model model) {
 
         model.addAttribute("invoice", invoiceService.findById(invoiceId));
-        model.addAttribute("vendors", invoiceService.findVendors());
+        model.addAttribute("clients", invoiceService.findClients());
 
         model.addAttribute("newInvoiceProduct", new InvoiceProductDto());
 
@@ -81,7 +81,7 @@ public class PurchaseInvoiceController {
         model.addAttribute("invoiceProducts", invoiceProductService.findInvoiceProductsByInvoiceId(invoiceId));
 
 
-        return "/invoice/purchase-invoice-update";
+        return "/invoice/sales-invoice-update";
 
     }
 
@@ -91,11 +91,12 @@ public class PurchaseInvoiceController {
 
         if (bindingResult.hasErrors()) {
 
-            return "redirect:/purchaseInvoices/update/" + invoiceId;
+
+            return "redirect:/salesInvoices/update/" + invoiceId;
         }
 
         invoiceService.update(invoiceDto, invoiceId);
-        return "redirect:/purchaseInvoices/list";
+        return "redirect:/salesInvoices/list";
     }
 
     @GetMapping("/delete/{invoiceId}")
@@ -103,7 +104,7 @@ public class PurchaseInvoiceController {
 
         invoiceService.delete(invoiceId);
 
-        return "redirect:/purchaseInvoices/list";
+        return "redirect:/salesInvoices/list";
     }
 
     @GetMapping("/approve/{invoiceId}")
@@ -111,21 +112,21 @@ public class PurchaseInvoiceController {
 
         invoiceService.approve(invoiceId);
 
-        return "redirect:/purchaseInvoices/list";
+        return "redirect:/salesInvoices/list";
     }
 
 
     @PostMapping("/addInvoiceProduct/{invoiceId}")
-    public String addInvoiceProductToPurchaseInvoice(@Valid @ModelAttribute("newInvoiceProduct") InvoiceProductDto invoiceProductDto, @PathVariable("invoiceId") Long invoiceId, BindingResult bindingResult, Model model) {
+    public String addInvoiceProductToPurchaseInvoice(@Valid @ModelAttribute("newInvoiceProduct") InvoiceProductDto invoiceProductDto, @PathVariable("invoiceId") Long invoiceId, BindingResult result, Model model) {
 
-        if (bindingResult.hasErrors()) {
+        if (result.hasErrors()) {
 
-            return "redirect:/purchaseInvoices/update/" + invoiceId;
+            return "redirect:/salesInvoices/update/" + invoiceId;
         }
 
         invoiceProductService.saveInvoiceProductByInvoiceId(invoiceProductDto, invoiceId);
 
-        return "redirect:/purchaseInvoices/update/" + invoiceId;
+        return "redirect:/salesInvoices/update/" + invoiceId;
     }
 
 }

@@ -32,7 +32,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final ClientVendorService clientVendorService;
     private final InvoiceProductService invoiceProductService;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, UserService userService, ClientVendorService clientVendorService,@Lazy InvoiceProductService invoiceProductService) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, UserService userService, ClientVendorService clientVendorService, @Lazy InvoiceProductService invoiceProductService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.userService = userService;
@@ -55,7 +55,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         return invoiceRepository.findAll().stream()
                 .filter(invoice -> invoice.getCompany().getTitle().equalsIgnoreCase(currentUserCompany.getTitle()))
-                .sorted(Comparator.comparing(Invoice::getInvoiceNo ).reversed())
+                .sorted(Comparator.comparing(Invoice::getInvoiceNo).reversed())
                 .map(invoice -> mapperUtil.convert(invoice, new InvoiceDto()))
                 .collect(Collectors.toList());
     }
@@ -128,8 +128,15 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceDto.setInvoiceProducts(new ArrayList<>());
         invoiceDto.setInvoiceStatus(InvoiceStatus.AWAITING_APPROVAL);
         invoiceDto.setCompany(userService.getCurrentUser().getCompany());
-        invoiceRepository.save(mapperUtil.convert(invoiceDto,new Invoice()));
+        invoiceRepository.save(mapperUtil.convert(invoiceDto, new Invoice()));
 
+    }
+
+    @Override
+    public void approve(Long invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).get();
+        invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
+        invoiceRepository.save(invoice);
     }
 
 
