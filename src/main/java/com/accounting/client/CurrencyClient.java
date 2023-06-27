@@ -1,13 +1,15 @@
 package com.accounting.client;
 
-import com.nogayhusrev.dto.Employee;
+import com.accounting.dto.CurrencyResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(url = "https://dummyapi.io", name = "EMPLOYEE-CLIENT")
+@FeignClient(url = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd.json", name = "CURRENCY-CLIENT")
 public interface CurrencyClient {
 
-    @GetMapping("/data/v1/user?limit=10")
-    Employee getEmployee(@RequestHeader("app-id") String id);
+    @GetMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    CurrencyResponse getUsdBasedCurrencies();
+
 }
