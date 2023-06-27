@@ -2,6 +2,7 @@ package com.accounting.service;
 
 import com.accounting.dto.ClientVendorDto;
 import com.accounting.dto.InvoiceDto;
+import com.accounting.enums.InvoiceStatus;
 import com.accounting.enums.InvoiceType;
 import com.accounting.service.common.CrudService;
 
@@ -17,5 +18,6 @@ public interface InvoiceService extends CrudService<InvoiceDto, Long> {
     InvoiceDto getNewInvoice(InvoiceType invoiceType);
     void save(InvoiceDto invoiceDto, InvoiceType invoiceType);
     void approve(Long invoiceId);
-
+    List<InvoiceDto> findLastThreeInvoices();
+    List<InvoiceDto> findInvoiceByInvoiceStatus(InvoiceStatus invoiceStatus);
 }

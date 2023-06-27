@@ -139,6 +139,24 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceRepository.save(invoice);
     }
 
+    @Override
+    public List<InvoiceDto> findLastThreeInvoices() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(InvoiceDto::getId).reversed())
+                .limit(3)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<InvoiceDto> findInvoiceByInvoiceType(InvoiceStatus invoiceStatus) {
+        Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
+        return invoiceRepository.findAll().stream()
+                .filter(invoice -> invoice.getCompany().getTitle().equalsIgnoreCase(company.getTitle()))
+                .filter(invoice -> invoice.getInvoiceStatus().equals(invoiceStatus))
+                .map(invoice -> mapperUtil.convert(invoice, new InvoiceDto()))
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public void save(InvoiceDto invoiceDto) {
