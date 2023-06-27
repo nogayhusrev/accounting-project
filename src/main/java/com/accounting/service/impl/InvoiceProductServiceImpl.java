@@ -4,6 +4,7 @@ import com.accounting.dto.InvoiceProductDto;
 import com.accounting.entity.Company;
 import com.accounting.entity.Invoice;
 import com.accounting.entity.InvoiceProduct;
+import com.accounting.enums.InvoiceType;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.InvoiceProductRepository;
 import com.accounting.service.InvoiceProductService;
@@ -38,6 +39,16 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
                 .map(invoiceProduct -> mapperUtil.convert(invoiceProduct, new InvoiceProductDto()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<InvoiceProduct> findInvoiceProductsByInvoiceType(InvoiceType invoiceType) {
+        Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
+        return invoiceProductRepository.findAll().stream()
+                .filter(invoiceProduct -> invoiceProduct.getInvoice().getCompany().getTitle().equals(company.getTitle()))
+                .filter(invoiceProduct -> invoiceProduct.getInvoice().getInvoiceType().equals(invoiceType))
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public void saveInvoiceProductByInvoiceId(InvoiceProductDto invoiceProductDto, Long invoiceId) {
