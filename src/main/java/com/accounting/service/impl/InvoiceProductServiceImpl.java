@@ -1,6 +1,7 @@
 package com.accounting.service.impl;
 
 import com.accounting.dto.InvoiceProductDto;
+import com.accounting.entity.Company;
 import com.accounting.entity.Invoice;
 import com.accounting.entity.InvoiceProduct;
 import com.accounting.mapper.MapperUtil;
@@ -11,6 +12,7 @@ import com.accounting.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +55,9 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
     @Override
     public List<InvoiceProductDto> findAll() {
+        Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
         return invoiceProductRepository.findAll().stream()
+                .filter(invoiceProduct -> invoiceProduct.getInvoice().getCompany().getTitle().equals(company.getTitle()))
                 .map(invoiceProduct -> mapperUtil.convert(invoiceProduct, new InvoiceProductDto()))
                 .collect(Collectors.toList());
     }
