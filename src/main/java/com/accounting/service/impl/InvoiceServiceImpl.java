@@ -148,7 +148,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> findInvoiceByInvoiceType(InvoiceStatus invoiceStatus) {
+    public List<InvoiceDto> findInvoiceByInvoiceStatus(InvoiceStatus invoiceStatus) {
         Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
         return invoiceRepository.findAll().stream()
                 .filter(invoice -> invoice.getCompany().getTitle().equalsIgnoreCase(company.getTitle()))
