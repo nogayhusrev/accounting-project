@@ -28,8 +28,4 @@ public class AddressServiceImpl implements AddressService {
         return countries;
     }
 
-    @Override
-    public List<States> getAllStates() {
-        return null;
-    }
 }
