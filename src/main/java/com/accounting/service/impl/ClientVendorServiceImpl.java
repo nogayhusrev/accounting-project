@@ -73,6 +73,14 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     }
 
+
+
+    @Override
+    public boolean isExist(ClientVendorDto clientVendorDto, Long clientVendorId) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
+
+    }
+
     @Override
     public boolean isExist(ClientVendorDto clientVendorDto) {
         return findAll().stream()

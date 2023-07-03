@@ -13,7 +13,6 @@ import com.accounting.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +55,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         InvoiceProduct invoiceProduct = mapperUtil.convert(invoiceProductDto, new InvoiceProduct());
         invoiceProduct.setInvoice(invoice);
         invoiceProduct.setProfitLoss(BigDecimal.ZERO);
-        save(mapperUtil.convert(invoiceProduct,new InvoiceProductDto()));
+        save(mapperUtil.convert(invoiceProduct, new InvoiceProductDto()));
     }
 
     @Override
@@ -90,7 +89,13 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
+    public boolean isExist(InvoiceProductDto invoiceProductDto, Long invoiceProductId) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
+    }
+
+    @Override
     public boolean isExist(InvoiceProductDto invoiceProductDto) {
         throw new IllegalStateException("NOT IMPLEMENTED");
     }
+
 }

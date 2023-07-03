@@ -90,7 +90,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public boolean isExist(CategoryDto categoryDto, Long categoryId) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
+    }
+
+    @Override
     public boolean isExist(CategoryDto categoryDto) {
         return findAll().stream().filter(category -> category.getDescription().equalsIgnoreCase(categoryDto.getDescription())).count() > 0;
     }
+
+
 }

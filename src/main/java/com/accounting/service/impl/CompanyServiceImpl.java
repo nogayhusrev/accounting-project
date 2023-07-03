@@ -72,9 +72,15 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public boolean isExist(CompanyDto companyDto, Long companyId) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
+    }
+
+    @Override
     public boolean isExist(CompanyDto companyDto) {
         return findAll().stream().filter(savedCompany -> savedCompany.getTitle().equalsIgnoreCase(companyDto.getTitle())).count() > 0;
     }
+
 
     @Override
     public void activate(Long companyId) {

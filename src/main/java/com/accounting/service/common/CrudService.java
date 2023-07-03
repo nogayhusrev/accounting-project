@@ -10,6 +10,7 @@ public interface CrudService<T, ID> {
     void save(T t);
     void delete(ID id);
     void update(T t, ID id);
+    boolean isExist(T t, ID id);
     boolean isExist(T t);
 
 }

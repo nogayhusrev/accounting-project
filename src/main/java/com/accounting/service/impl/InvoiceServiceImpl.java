@@ -184,6 +184,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public boolean isExist(InvoiceDto invoiceDto, Long aLong) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
+    }
+
+    @Override
     public boolean isExist(InvoiceDto invoiceDto) {
         throw new IllegalStateException("NOT IMPLEMENTED");
     }

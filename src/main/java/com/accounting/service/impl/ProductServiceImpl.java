@@ -39,12 +39,12 @@ public class ProductServiceImpl implements ProductService {
                 .filter(product -> product.getCategory().getCompany().getTitle().equalsIgnoreCase(company.getTitle()))
                 .sorted(Comparator.comparing((Product product) -> product.getCategory().getDescription())
                         .thenComparing(Product::getName))
-                .map(product -> mapperUtil.convert(product,new ProductDto())).collect(Collectors.toList());
+                .map(product -> mapperUtil.convert(product, new ProductDto())).collect(Collectors.toList());
     }
 
     @Override
     public void save(ProductDto productDto) {
-        Product product = mapperUtil.convert(productDto,new Product());
+        Product product = mapperUtil.convert(productDto, new Product());
         product.setQuantityInStock(0);
         productRepository.save(product);
 
@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long productId) {
         Product product = productRepository.findById(productId).get();
 
-        if (product.getQuantityInStock() > 0 )
+        if (product.getQuantityInStock() > 0)
             return;
 
         product.setIsDeleted(true);
@@ -68,6 +68,12 @@ public class ProductServiceImpl implements ProductService {
         productDto.setId(productId);
         productDto.setQuantityInStock(productRepository.findById(productId).get().getQuantityInStock());
         productRepository.save(mapperUtil.convert(productDto, new Product()));
+    }
+
+    @Override
+    public boolean isExist(ProductDto productDto, Long productId) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
+
     }
 
     @Override

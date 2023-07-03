@@ -96,10 +96,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isExist(UserDto userDto, Long userId) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
+
+    }
+
+    @Override
     public boolean isExist(UserDto userDto) {
         return findAll().stream().filter(userDto1 -> userDto1.getUsername().equals(userDto.getUsername())).count() > 0;
     }
-
 
     private int adminCount(UserDto userDto) {
         return (int) userRepository.findAllByCompany(mapperUtil.convert(userDto.getCompany(), new Company())).stream()
