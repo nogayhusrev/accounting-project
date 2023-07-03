@@ -1,7 +1,13 @@
 package com.accounting.service;
 
-import com.accounting.dto.AddressDto;
-import com.accounting.service.common.CrudService;
+import com.accounting.dto.addressApi.Country;
 
-public interface AddressService extends CrudService<AddressDto, Long> {
+import java.util.List;
+
+public interface AddressService {
+
+     List<Country> getAllCountries();
+     List<String> getAllCities();
+     List<String> getCitiesOfSelectedCountry(String country);
+     List<String> getAllStates();
 }

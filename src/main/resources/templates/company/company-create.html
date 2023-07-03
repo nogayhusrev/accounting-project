@@ -164,20 +164,32 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 col-md-4">
+                                                        <div class="col-12 col-md-4" >
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Country</label>
-                                                                    <input type="text" th:field="*{address.country}"
-                                                                           placeholder="State"
-                                                                           class="form-control">
-                                                                    <div th:if="${#fields.hasErrors('address.country')}">
-                                                                        <ul>
-                                                                            <li class="validation"
-                                                                                th:each="err : ${#fields.errors('address.country')}"
-                                                                                th:text="${err}"></li>
-                                                                        </ul>
-                                                                    </div>
+<!--                                                                    <input type="text" th:field="*{address.country}"-->
+<!--                                                                           placeholder="Country"-->
+<!--                                                                           class="form-control">-->
+<!--                                                                    <div th:if="${#fields.hasErrors('address.country')}">-->
+<!--                                                                        <ul>-->
+<!--                                                                            <li class="validation"-->
+<!--                                                                                th:each="err : ${#fields.errors('address.country')}"-->
+<!--                                                                                th:text="${err}"></li>-->
+<!--                                                                        </ul>-->
+<!--                                                                    </div>-->
+                                                                    <select id="country" name="country"
+                                                                            class="custom-select"
+                                                                            th:field="*{address.country}">
+                                                                        <option th:if="${countries.size() > 1}"
+                                                                                th:value="''"
+                                                                                th:text="'Select'"></option>
+                                                                        <option th:each="country:${countries}"
+                                                                                th:value="${country.country}"
+                                                                                th:text="${country.country}">
+
+                                                                        </option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>

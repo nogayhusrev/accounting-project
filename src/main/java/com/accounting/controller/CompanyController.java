@@ -2,6 +2,7 @@ package com.accounting.controller;
 
 
 import com.accounting.dto.CompanyDto;
+import com.accounting.service.AddressService;
 import com.accounting.service.CompanyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +16,11 @@ import javax.validation.Valid;
 public class CompanyController {
 
     private final CompanyService companyService;
+    private final AddressService addressService;
 
-    public CompanyController(CompanyService companyService) {
+    public CompanyController(CompanyService companyService, AddressService addressService) {
         this.companyService = companyService;
+        this.addressService = addressService;
     }
 
     @GetMapping("/list")
@@ -32,7 +35,10 @@ public class CompanyController {
     @GetMapping("/create")
     public String create(Model model){
 
+
+
         model.addAttribute("newCompany", new CompanyDto());
+        model.addAttribute("countries",addressService.getAllCountries());
 
         return "/company/company-create";
 
