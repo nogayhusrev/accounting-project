@@ -73,12 +73,20 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public boolean isExist(CompanyDto companyDto, Long companyId) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+        Long idCheck = companyRepository.findAll().stream()
+                .filter(savedCompany -> savedCompany.getTitle().equalsIgnoreCase(companyDto.getTitle()))
+                .filter(savedCompany -> savedCompany.getId() != companyId)
+                .count();
+
+        return idCheck > 0;
+
     }
 
     @Override
     public boolean isExist(CompanyDto companyDto) {
-        return findAll().stream().filter(savedCompany -> savedCompany.getTitle().equalsIgnoreCase(companyDto.getTitle())).count() > 0;
+        return companyRepository.findAll().stream()
+                .filter(savedCompany -> savedCompany.getTitle().equalsIgnoreCase(companyDto.getTitle()))
+                .count() > 0;
     }
 
 

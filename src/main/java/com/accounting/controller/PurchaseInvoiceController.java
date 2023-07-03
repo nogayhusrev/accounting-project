@@ -59,6 +59,9 @@ public class PurchaseInvoiceController {
 
         if (bindingResult.hasErrors()) {
 
+            model.addAttribute("newPurchaseInvoice", invoiceService.getNewInvoice(InvoiceType.PURCHASE));
+            model.addAttribute("vendors", invoiceService.findVendors());
+
             return "/invoice/purchase-invoice-create";
         }
 

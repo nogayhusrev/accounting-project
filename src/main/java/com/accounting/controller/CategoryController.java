@@ -50,6 +50,8 @@ public class CategoryController {
 
         if (bindingResult.hasErrors()) {
 
+            model.addAttribute("newCategory", new CategoryDto());
+
             return "/category/category-create";
         }
 
@@ -72,6 +74,9 @@ public class CategoryController {
     @PostMapping("/update/{categoryId}")
     public String update(@Valid @ModelAttribute("category") CategoryDto categoryDto, BindingResult bindingResult, @PathVariable Long categoryId, Model model) throws CloneNotSupportedException {
 
+        if (categoryService.isExist(categoryDto, categoryId)) {
+            bindingResult.rejectValue("description", " ", "This category already exists.");
+        }
 
         if (bindingResult.hasErrors()) {
 

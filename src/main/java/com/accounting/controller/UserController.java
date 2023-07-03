@@ -83,6 +83,9 @@ public class UserController {
     @PostMapping("/update/{userId}")
     public String update(@Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, @PathVariable Long userId, Model model) throws CloneNotSupportedException {
 
+        if (userService.isExist(userDto, userId)) {
+            bindingResult.rejectValue("username", " ", "This username already exists.");
+        }
 
         if (bindingResult.hasErrors()) {
             userDto.setId(userId);

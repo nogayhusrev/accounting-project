@@ -72,12 +72,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean isExist(ProductDto productDto, Long productId) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+        Long idCheck = productRepository.findAll().stream()
+                .filter(savedProduct -> savedProduct.getName().equalsIgnoreCase(productDto.getName()))
+                .filter(savedProduct -> savedProduct.getId() != productId)
+                .count();
 
+        return idCheck > 0;
     }
 
     @Override
     public boolean isExist(ProductDto productDto) {
-        return findAll().stream().filter(savedProduct -> savedProduct.getName().equalsIgnoreCase(productDto.getName())).count() > 0;
+        return productRepository.findAll().stream()
+                .filter(savedProduct -> savedProduct.getName().equalsIgnoreCase(productDto.getName()))
+                .count() > 0;
     }
 }

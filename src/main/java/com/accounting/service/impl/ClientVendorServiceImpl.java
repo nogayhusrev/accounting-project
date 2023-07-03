@@ -76,14 +76,19 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public boolean isExist(ClientVendorDto clientVendorDto, Long clientVendorId) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+        Long idCheck = clientVendorRepository.findAll().stream()
+                .filter(savedClientVendor -> savedClientVendor.getClientVendorName().equalsIgnoreCase(clientVendorDto.getClientVendorName()))
+                .filter(savedClientVendor -> savedClientVendor.getId() != clientVendorId)
+                .count();
+
+        return idCheck > 0;
 
     }
 
     @Override
     public boolean isExist(ClientVendorDto clientVendorDto) {
-        return findAll().stream()
-                .filter(clientVendor -> clientVendor.getClientVendorName().equalsIgnoreCase(clientVendorDto.getClientVendorName()))
+        return clientVendorRepository.findAll().stream()
+                .filter(savedClientVendor -> savedClientVendor.getClientVendorName().equalsIgnoreCase(clientVendorDto.getClientVendorName()))
                 .count() > 0;
     }
 }

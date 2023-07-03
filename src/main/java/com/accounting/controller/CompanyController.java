@@ -49,14 +49,18 @@ public class CompanyController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("newCompany") CompanyDto companyDto, BindingResult bindingResult) {
+    public String create(@Valid @ModelAttribute("newCompany") CompanyDto companyDto, BindingResult bindingResult, Model model) {
 
         if (companyService.isExist(companyDto)) {
-            bindingResult.rejectValue("title", " ", "This title already exists.");
+            bindingResult.rejectValue("title", " ", "This Company already exists.");
         }
 
 
         if (bindingResult.hasErrors()) {
+
+            model.addAttribute("newCompany", new CompanyDto());
+            model.addAttribute("countries", addressService.getAllCountries());
+
             return "company/company-create";
         }
 
@@ -70,7 +74,7 @@ public class CompanyController {
     public String update(@PathVariable("companyId") Long companyId, Model model) {
 
         model.addAttribute("company", companyService.findById(companyId));
-
+        model.addAttribute("countries", addressService.getAllCountries());
         return "/company/company-update";
 
     }
@@ -78,9 +82,13 @@ public class CompanyController {
     @PostMapping("/update/{companyId}")
     public String update(@Valid @ModelAttribute("company") CompanyDto companyDto, BindingResult bindingResult, @PathVariable Long companyId) throws CloneNotSupportedException {
 
+        if (companyService.isExist(companyDto, companyId)) {
+            bindingResult.rejectValue("title", " ", "This title already exists.");
+        }
 
         if (bindingResult.hasErrors()) {
-            companyDto.setId(companyId);
+
+
             return "redirect:/companies/update/" + companyId;
         }
 

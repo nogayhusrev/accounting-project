@@ -3,6 +3,7 @@ package com.accounting.controller;
 
 import com.accounting.dto.ClientVendorDto;
 import com.accounting.enums.ClientVendorType;
+import com.accounting.service.AddressService;
 import com.accounting.service.ClientVendorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,11 @@ import java.util.Arrays;
 public class ClientVendorController {
 
     private final ClientVendorService clientVendorService;
+    private final AddressService addressService;
 
-    public ClientVendorController(ClientVendorService clientVendorService) {
+    public ClientVendorController(ClientVendorService clientVendorService, AddressService addressService) {
         this.clientVendorService = clientVendorService;
+        this.addressService = addressService;
     }
 
     @GetMapping("/list")
@@ -36,7 +39,8 @@ public class ClientVendorController {
 
 
         model.addAttribute("newClientVendor", new ClientVendorDto());
-        model.addAttribute("clientVendorTypes", new ArrayList<ClientVendorType>(Arrays.asList(ClientVendorType.CLIENT, ClientVendorType.VENDOR)));
+        model.addAttribute("clientVendorTypes", new ArrayList<>(Arrays.asList(ClientVendorType.CLIENT, ClientVendorType.VENDOR)));
+        model.addAttribute("countries", addressService.getAllCountries());
 
 
         return "/clientVendor/clientVendor-create";
@@ -52,8 +56,8 @@ public class ClientVendorController {
 
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("clientVendorTypes", new ArrayList<ClientVendorType>(Arrays.asList(ClientVendorType.CLIENT, ClientVendorType.VENDOR)));
-
+            model.addAttribute("clientVendorTypes", new ArrayList<>(Arrays.asList(ClientVendorType.CLIENT, ClientVendorType.VENDOR)));
+            model.addAttribute("countries", addressService.getAllCountries());
 
             return "/clientVendor/clientVendor-create";
         }
@@ -68,7 +72,8 @@ public class ClientVendorController {
     public String update(@PathVariable("clientVendorId") Long clientVendorId, Model model) {
 
         model.addAttribute("clientVendor", clientVendorService.findById(clientVendorId));
-        model.addAttribute("clientVendorTypes", new ArrayList<ClientVendorType>(Arrays.asList(ClientVendorType.CLIENT, ClientVendorType.VENDOR)));
+        model.addAttribute("clientVendorTypes", new ArrayList<>(Arrays.asList(ClientVendorType.CLIENT, ClientVendorType.VENDOR)));
+        model.addAttribute("countries", addressService.getAllCountries());
 
 
         return "/clientVendor/clientVendor-update";
@@ -78,9 +83,12 @@ public class ClientVendorController {
     @PostMapping("/update/{clientVendorId}")
     public String update(@Valid @ModelAttribute("clientVendorId") ClientVendorDto clientVendorDto, BindingResult bindingResult, @PathVariable Long clientVendorId) throws CloneNotSupportedException {
 
+        if (clientVendorService.isExist(clientVendorDto, clientVendorId)) {
+            bindingResult.rejectValue("clientVendorName", " ", "This Name already exists.");
+        }
 
         if (bindingResult.hasErrors()) {
-            clientVendorDto.setId(clientVendorId);
+
             return "redirect:/clientVendors/update/" + clientVendorId;
         }
 

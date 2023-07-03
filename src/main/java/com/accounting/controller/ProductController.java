@@ -61,11 +61,24 @@ public class ProductController {
     public String create(@Valid @ModelAttribute("newProduct") ProductDto productDto, BindingResult bindingResult, Model model) {
 
         if (productService.isExist(productDto)) {
-            bindingResult.rejectValue("name", " ", "This category already exists.");
+            bindingResult.rejectValue("name", " ", "This product already exists.");
         }
 
 
         if (bindingResult.hasErrors()) {
+
+            model.addAttribute("newProduct", new ProductDto());
+            model.addAttribute("categories", categoryService.findAll());
+
+            model.addAttribute("productUnits", new ArrayList<>(Arrays.asList(
+                    ProductUnit.KG,
+                    ProductUnit.LBS,
+                    ProductUnit.PCS,
+                    ProductUnit.FEET,
+                    ProductUnit.INCH,
+                    ProductUnit.GALLON,
+                    ProductUnit.METER
+            )));
 
             return "/product/product-create";
         }
@@ -99,6 +112,9 @@ public class ProductController {
     @PostMapping("/update/{productId}")
     public String update(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, @PathVariable Long productId, Model model) {
 
+        if (productService.isExist(productDto, productId)) {
+            bindingResult.rejectValue("name", " ", "This category already exists.");
+        }
 
         if (bindingResult.hasErrors()) {
 

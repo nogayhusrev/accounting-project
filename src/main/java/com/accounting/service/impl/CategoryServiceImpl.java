@@ -85,18 +85,31 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void update(CategoryDto categoryDto, Long categoryId) {
+        CategoryDto savedCategory = mapperUtil.convert(categoryRepository.findById(categoryId).get(), new CategoryDto());
+
+        categoryDto.setCompany(savedCategory.getCompany());
         categoryDto.setId(categoryId);
         categoryRepository.save(mapperUtil.convert(categoryDto, new Category()));
     }
 
     @Override
     public boolean isExist(CategoryDto categoryDto, Long categoryId) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+
+        Long idCheck = categoryRepository.findAll().stream()
+                .filter(savedCategory -> savedCategory.getDescription().equalsIgnoreCase(categoryDto.getDescription()))
+                .filter(savedCategory -> savedCategory.getId() != categoryId)
+                .count();
+
+
+
+        return  idCheck > 0;
     }
 
     @Override
     public boolean isExist(CategoryDto categoryDto) {
-        return findAll().stream().filter(category -> category.getDescription().equalsIgnoreCase(categoryDto.getDescription())).count() > 0;
+        return categoryRepository.findAll().stream()
+                .filter(savedCategory -> savedCategory.getDescription().equalsIgnoreCase(categoryDto.getDescription()))
+                .count() > 0;
     }
 
 

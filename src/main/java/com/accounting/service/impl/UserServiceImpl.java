@@ -97,13 +97,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isExist(UserDto userDto, Long userId) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+        Long idCheck = userRepository.findAll().stream()
+                .filter(savedUser -> savedUser.getUsername().equalsIgnoreCase(userDto.getUsername()))
+                .filter(savedUser -> savedUser.getId() != userId)
+                .count();
 
+        return idCheck > 0;
     }
 
     @Override
     public boolean isExist(UserDto userDto) {
-        return findAll().stream().filter(userDto1 -> userDto1.getUsername().equals(userDto.getUsername())).count() > 0;
+        return userRepository.findAll().stream()
+                .filter(savedUser -> savedUser.getUsername().equalsIgnoreCase(userDto.getUsername()))
+                .count() > 0;
     }
 
     private int adminCount(UserDto userDto) {
