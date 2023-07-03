@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -22,6 +24,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Country {
 
     @JsonProperty("name")
@@ -34,4 +37,17 @@ public class Country {
     @Valid
     public List<State> states;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Country)) return false;
+        Country country = (Country) o;
+        return Objects.equals(getName(), country.getName()) && Objects.equals(getIso3(), country.getIso3()) && Objects.equals(getIso2(), country.getIso2());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getIso3(), getIso2());
+    }
 }
