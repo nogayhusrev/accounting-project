@@ -6,6 +6,7 @@ import com.accounting.enums.InvoiceStatus;
 import com.accounting.enums.InvoiceType;
 import com.accounting.service.common.CrudService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface InvoiceService extends CrudService<InvoiceDto, Long> {
@@ -29,4 +30,12 @@ public interface InvoiceService extends CrudService<InvoiceDto, Long> {
     List<InvoiceDto> findLastThreeInvoices();
 
     List<InvoiceDto> findInvoiceByInvoiceStatus(InvoiceStatus invoiceStatus);
+
+    void printInvoice(Long invoiceId);
+
+    BigDecimal getTotalPriceOfInvoice(Long invoiceId);
+
+    BigDecimal getTotalTaxOfInvoice(Long invoiceId);
+
+    BigDecimal getProfitLossOfInvoice(Long invoiceId);
 }

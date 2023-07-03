@@ -2,6 +2,7 @@ package com.accounting.service.impl;
 
 import com.accounting.dto.ClientVendorDto;
 import com.accounting.dto.InvoiceDto;
+import com.accounting.dto.InvoiceProductDto;
 import com.accounting.entity.ClientVendor;
 import com.accounting.entity.Company;
 import com.accounting.entity.Invoice;
@@ -17,6 +18,8 @@ import com.accounting.service.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -135,7 +138,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void approve(Long invoiceId) {
         Invoice invoice = invoiceRepository.findById(invoiceId).get();
+
+        invoiceProductService.completeApprovalProcedures(invoiceId, invoice.getInvoiceType());
+
+
         invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
+        invoice.setDate(LocalDate.now());
         invoiceRepository.save(invoice);
     }
 
@@ -157,12 +165,18 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void printInvoice(Long invoiceId) {
+
+        InvoiceDto invoiceDto = mapperUtil.convert(invoiceRepository.findById(invoiceId).get(), new InvoiceDto());
+        calculateInvoiceDetails(invoiceDto);
+
+    }
+
 
     @Override
     public void save(InvoiceDto invoiceDto) {
-
-        invoiceDto.setCompany(userService.getCurrentUser().getCompany());
-        invoiceRepository.save(mapperUtil.convert(invoiceDto, new Invoice()));
+        throw new IllegalStateException("NOT IMPLEMENTED");
     }
 
     @Override
@@ -191,6 +205,43 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public boolean isExist(InvoiceDto invoiceDto) {
         throw new IllegalStateException("NOT IMPLEMENTED");
+    }
+
+    private void calculateInvoiceDetails(InvoiceDto invoiceDto) {
+        invoiceDto.setPrice(getTotalPriceOfInvoice(invoiceDto.getId()));
+        invoiceDto.setTax(getTotalTaxOfInvoice(invoiceDto.getId()));
+        invoiceDto.setTotal(getTotalPriceOfInvoice(invoiceDto.getId()).add(getTotalTaxOfInvoice(invoiceDto.getId())));
+    }
+
+    @Override
+    public BigDecimal getTotalPriceOfInvoice(Long invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).get();
+        List<InvoiceProductDto> invoiceProductsOfInvoice = invoiceProductService.findInvoiceProductsByInvoiceId(invoice.getId());
+        return invoiceProductsOfInvoice.stream()
+                .map(p -> p.getPrice()
+                        .multiply(BigDecimal.valueOf((long) p.getQuantity())))
+                .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+    }
+
+    @Override
+    public BigDecimal getTotalTaxOfInvoice(Long invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).get();
+        List<InvoiceProductDto> invoiceProductsOfInvoice = invoiceProductService.findInvoiceProductsByInvoiceId(invoice.getId());
+        return invoiceProductsOfInvoice.stream()
+                .map(p -> p.getPrice()
+                        .multiply(BigDecimal.valueOf(p.getQuantity() * p.getTax() / 100d))
+                        .setScale(2, RoundingMode.HALF_UP))
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
+    }
+
+    @Override
+    public BigDecimal getProfitLossOfInvoice(Long invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).get();
+        List<InvoiceProductDto> invoiceProductsOfInvoice = invoiceProductService.findInvoiceProductsByInvoiceId(invoice.getId());
+        return invoiceProductsOfInvoice.stream()
+                .map(InvoiceProductDto::getProfitLoss)
+                .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
     }
 
 
