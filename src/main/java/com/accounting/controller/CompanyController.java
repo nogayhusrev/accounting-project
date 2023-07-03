@@ -43,7 +43,6 @@ public class CompanyController {
 
         model.addAttribute("newCompany", new CompanyDto());
         model.addAttribute("countries", addressService.getAllCountries());
-//        model.addAttribute("states", addressService.getAllCountriesAndStates());
 
         return "/company/company-create";
 
