@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "companies")
 @Where(clause = "is_deleted=false")
-public class Company extends BaseEntity{
+public class Company extends BaseEntity {
 
     @Column(unique = true)
     private String title;

@@ -18,7 +18,7 @@ public class ProductDtoConverter implements Converter<String, ProductDto> {
     }
 
     @Override
-    public ProductDto convert(String id){
+    public ProductDto convert(String id) {
         // it throws error if user selects "Select" even with @SneakyThrows
         if (id == null || id.isBlank())
             return null;

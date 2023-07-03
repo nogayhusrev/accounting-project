@@ -1,6 +1,5 @@
 package com.accounting.converter;
 
-import com.accounting.dto.RoleDto;
 import com.accounting.dto.UserDto;
 import com.accounting.service.UserService;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
@@ -21,7 +20,7 @@ public class UserDtoConverter implements Converter<String, UserDto> {
 
     //    @SneakyThrows
     @Override
-    public UserDto convert(String id){
+    public UserDto convert(String id) {
         // it throws error if user selects "Select" even with @SneakyThrows
         if (id == null || id.isBlank())
             return null;

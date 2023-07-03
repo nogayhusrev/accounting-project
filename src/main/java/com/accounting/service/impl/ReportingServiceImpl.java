@@ -2,7 +2,6 @@ package com.accounting.service.impl;
 
 
 import com.accounting.dto.InvoiceProductDto;
-import com.accounting.entity.Company;
 import com.accounting.entity.InvoiceProduct;
 import com.accounting.enums.InvoiceStatus;
 import com.accounting.enums.InvoiceType;
@@ -12,7 +11,10 @@ import com.accounting.service.ReportingService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,10 +32,10 @@ public class ReportingServiceImpl implements ReportingService {
 
     @Override
     public List<InvoiceProductDto> getStock() {
-       return invoiceProductService.findAll().stream()
-               .filter(invoiceProductDto -> invoiceProductDto.getInvoice().getInvoiceStatus().equals(InvoiceStatus.APPROVED))
-               .sorted(Comparator.comparing(InvoiceProductDto::getId).reversed())
-               .collect(Collectors.toList());
+        return invoiceProductService.findAll().stream()
+                .filter(invoiceProductDto -> invoiceProductDto.getInvoice().getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+                .sorted(Comparator.comparing(InvoiceProductDto::getId).reversed())
+                .collect(Collectors.toList());
     }
 
     @Override

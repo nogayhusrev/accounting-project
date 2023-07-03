@@ -79,14 +79,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     private boolean hasProducts(Category category) {
         return productService.findAll().stream()
-                        .filter(productDto -> productDto.getCategory().getDescription().equalsIgnoreCase(category.getDescription()))
-                        .count() > 0;
+                .filter(productDto -> productDto.getCategory().getDescription().equalsIgnoreCase(category.getDescription()))
+                .count() > 0;
     }
 
     @Override
     public void update(CategoryDto categoryDto, Long categoryId) {
         categoryDto.setId(categoryId);
-        categoryRepository.save(mapperUtil.convert(categoryDto,new Category()));
+        categoryRepository.save(mapperUtil.convert(categoryDto, new Category()));
     }
 
     @Override

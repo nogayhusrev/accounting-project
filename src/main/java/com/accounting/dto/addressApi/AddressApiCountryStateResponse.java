@@ -13,25 +13,22 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "name",
-        "iso3",
-        "iso2",
-        "states"
+        "error",
+        "msg",
+        "data"
 })
 @Generated("jsonschema2pojo")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Country {
+public class AddressApiCountryStateResponse {
 
-    @JsonProperty("name")
-    public String name;
-    @JsonProperty("iso3")
-    public String iso3;
-    @JsonProperty("iso2")
-    public String iso2;
-    @JsonProperty("states")
+    @JsonProperty("error")
+    public Boolean error;
+    @JsonProperty("msg")
+    public String msg;
+    @JsonProperty("data")
     @Valid
-    public List<State> states;
+    public List<Country> countries;
 
 }

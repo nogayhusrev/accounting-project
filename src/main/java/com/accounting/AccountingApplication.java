@@ -17,10 +17,13 @@ public class AccountingApplication {
     }
 
     @Bean
-    public ModelMapper mapper(){return new ModelMapper();}
+    public ModelMapper mapper() {
+        return new ModelMapper();
+    }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

@@ -29,28 +29,28 @@ public class ProductController {
 
 
     @GetMapping("/list")
-    public String list(Model model){
+    public String list(Model model) {
 
-        model.addAttribute("products",productService.findAll());
+        model.addAttribute("products", productService.findAll());
 
         return "/product/product-list";
     }
 
 
     @GetMapping("/create")
-    public String create(Model model){
+    public String create(Model model) {
 
         model.addAttribute("newProduct", new ProductDto());
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("productUnits", new ArrayList<>(Arrays.asList(
-                                                                                        ProductUnit.KG,
-                                                                                        ProductUnit.LBS,
-                                                                                        ProductUnit.PCS,
-                                                                                        ProductUnit.FEET,
-                                                                                        ProductUnit.INCH,
-                                                                                        ProductUnit.GALLON,
-                                                                                        ProductUnit.METER
-                                                                                        )));
+                ProductUnit.KG,
+                ProductUnit.LBS,
+                ProductUnit.PCS,
+                ProductUnit.FEET,
+                ProductUnit.INCH,
+                ProductUnit.GALLON,
+                ProductUnit.METER
+        )));
 
 
         return "/product/product-create";
@@ -77,9 +77,9 @@ public class ProductController {
     }
 
     @GetMapping("/update/{productId}")
-    public String update(@PathVariable("productId") Long productId, Model model){
+    public String update(@PathVariable("productId") Long productId, Model model) {
 
-        model.addAttribute("product",productService.findById(productId));
+        model.addAttribute("product", productService.findById(productId));
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("productUnits", new ArrayList<>(Arrays.asList(
                 ProductUnit.KG,
@@ -92,14 +92,12 @@ public class ProductController {
         )));
 
 
-
-
         return "/product/product-update";
 
     }
 
     @PostMapping("/update/{productId}")
-    public String update(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, @PathVariable Long productId, Model model)  {
+    public String update(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, @PathVariable Long productId, Model model) {
 
 
         if (bindingResult.hasErrors()) {
@@ -112,11 +110,10 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{productId}")
-    public String delete(@PathVariable("productId") Long productId){
+    public String delete(@PathVariable("productId") Long productId) {
         productService.delete(productId);
         return "redirect:/products/list";
     }
-
 
 
 }

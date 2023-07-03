@@ -1,7 +1,6 @@
 package com.accounting.converter;
 
 import com.accounting.dto.CategoryDto;
-import com.accounting.dto.UserDto;
 import com.accounting.service.CategoryService;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.context.annotation.Lazy;

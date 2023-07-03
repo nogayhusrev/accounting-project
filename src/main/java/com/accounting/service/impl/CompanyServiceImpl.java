@@ -2,13 +2,13 @@ package com.accounting.service.impl;
 
 
 import com.accounting.dto.CompanyDto;
+import com.accounting.entity.Company;
 import com.accounting.enums.CompanyStatus;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.CompanyRepository;
 import com.accounting.service.CompanyService;
 import com.accounting.service.UserService;
 import org.springframework.stereotype.Service;
-import com.accounting.entity.Company;
 
 import java.util.Comparator;
 import java.util.List;
@@ -32,7 +32,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDto findById(Long companyId) {
-        return mapperUtil.convert(companyRepository.findById(companyId).get(),new CompanyDto());
+        return mapperUtil.convert(companyRepository.findById(companyId).get(), new CompanyDto());
     }
 
     @Override
@@ -99,9 +99,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDto> getCompaniesForCurrentUser() {
         List<Company> companies;
-        if (userService.getCurrentUser().getRole().getDescription().equals("Root User")){
+        if (userService.getCurrentUser().getRole().getDescription().equals("Root User")) {
             companies = companyRepository.findAll();
-        }else {
+        } else {
             companies = companyRepository.findAll().stream()
                     .filter(company -> company.getTitle().equals(userService.getCurrentUser().getCompany().getTitle()))
                     .collect(Collectors.toList());

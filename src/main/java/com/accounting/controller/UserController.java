@@ -1,7 +1,6 @@
 package com.accounting.controller;
 
 
-import com.accounting.dto.CompanyDto;
 import com.accounting.dto.UserDto;
 import com.accounting.service.CompanyService;
 import com.accounting.service.RoleService;
@@ -30,16 +29,16 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public String list(Model model){
+    public String list(Model model) {
 
-        model.addAttribute("users",userService.findAll());
+        model.addAttribute("users", userService.findAll());
 
         return "/user/user-list";
     }
 
 
     @GetMapping("/create")
-    public String create(Model model){
+    public String create(Model model) {
 
         model.addAttribute("newUser", new UserDto());
         model.addAttribute("userRoles", roleService.getRolesForCurrentUser());
@@ -71,9 +70,9 @@ public class UserController {
     }
 
     @GetMapping("/update/{userId}")
-    public String update(@PathVariable Long userId, Model model){
+    public String update(@PathVariable Long userId, Model model) {
 
-        model.addAttribute("user",userService.findById(userId));
+        model.addAttribute("user", userService.findById(userId));
         model.addAttribute("userRoles", roleService.getRolesForCurrentUser());
         model.addAttribute("companies", companyService.getCompaniesForCurrentUser());
 
@@ -95,7 +94,7 @@ public class UserController {
     }
 
     @GetMapping("/delete/{userId}")
-    public String delete(@PathVariable("userId") Long userId){
+    public String delete(@PathVariable("userId") Long userId) {
         userService.delete(userId);
         return "redirect:/users/list";
     }

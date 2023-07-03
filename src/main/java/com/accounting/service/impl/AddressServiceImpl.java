@@ -1,12 +1,11 @@
 package com.accounting.service.impl;
 
 import com.accounting.client.AddressClient;
-import com.accounting.dto.addressApi.AddressApiCountryResponse;
 import com.accounting.dto.addressApi.Country;
 import com.accounting.service.AddressService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,30 +18,18 @@ public class AddressServiceImpl implements AddressService {
         this.addressClient = addressClient;
     }
 
+
     @Override
     public List<Country> getAllCountries() {
+        List<Country> countries = addressClient.getAddressApiCountryStateResponse().getCountries();
 
-        List<Country> countries = new ArrayList<>();
-
-        AddressApiCountryResponse addressApiCountryResponse = addressClient.getAddressApiCountryResponse();
-
-        countries.addAll(addressApiCountryResponse.getData());
+        countries =countries.stream().sorted(Comparator.comparing(country -> country.name)).collect(Collectors.toList());
 
         return countries;
     }
 
     @Override
-    public List<String> getAllCities() {
-        return null;
-    }
-
-    @Override
-    public List<String> getCitiesOfSelectedCountry(String country) {
-        return null;
-    }
-
-    @Override
-    public List<String> getAllStates() {
+    public List<States> getAllStates() {
         return null;
     }
 }

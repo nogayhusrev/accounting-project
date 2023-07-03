@@ -7,8 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.HashMap;
-
 @Controller
 @RequestMapping("/reports")
 public class ReportingController {
@@ -37,8 +35,6 @@ public class ReportingController {
 
         return "/report/profit-loss-report";
     }
-
-
 
 
 }

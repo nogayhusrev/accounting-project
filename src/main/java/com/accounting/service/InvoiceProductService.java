@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface InvoiceProductService extends CrudService<InvoiceProductDto, Long> {
     List<InvoiceProductDto> findInvoiceProductsByInvoiceId(Long invoiceId);
+
     List<InvoiceProduct> findInvoiceProductsByInvoiceType(InvoiceType invoiceType);
+
     void saveInvoiceProductByInvoiceId(InvoiceProductDto invoiceProductDto, Long invoiceId);
 
 }

@@ -22,16 +22,16 @@ public class CategoryController {
 
 
     @GetMapping("/list")
-    public String list(Model model){
+    public String list(Model model) {
 
-        model.addAttribute("categories",categoryService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
 
         return "/category/category-list";
     }
 
 
     @GetMapping("/create")
-    public String create(Model model){
+    public String create(Model model) {
 
         model.addAttribute("newCategory", new CategoryDto());
 
@@ -60,9 +60,9 @@ public class CategoryController {
     }
 
     @GetMapping("/update/{categoryId}")
-    public String update(@PathVariable("categoryId") Long categoryId, Model model){
+    public String update(@PathVariable("categoryId") Long categoryId, Model model) {
 
-        model.addAttribute("category",categoryService.findById(categoryId));
+        model.addAttribute("category", categoryService.findById(categoryId));
 
 
         return "/category/category-update";
@@ -83,7 +83,7 @@ public class CategoryController {
     }
 
     @GetMapping("/delete/{categoryId}")
-    public String delete(@PathVariable("categoryId") Long categoryId){
+    public String delete(@PathVariable("categoryId") Long categoryId) {
         categoryService.delete(categoryId);
         return "redirect:/categories/list";
     }

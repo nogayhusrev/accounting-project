@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "addresses")
 @Where(clause = "is_deleted=false")
-public class Address extends BaseEntity{
+public class Address extends BaseEntity {
 
     private String addressLine1;
     private String addressLine2;

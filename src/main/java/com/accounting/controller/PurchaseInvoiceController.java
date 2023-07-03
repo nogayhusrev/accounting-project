@@ -99,7 +99,7 @@ public class PurchaseInvoiceController {
     }
 
     @GetMapping("/delete/{invoiceId}")
-    public String delete(@PathVariable("invoiceId") Long invoiceId){
+    public String delete(@PathVariable("invoiceId") Long invoiceId) {
 
         invoiceService.delete(invoiceId);
 
@@ -107,7 +107,7 @@ public class PurchaseInvoiceController {
     }
 
     @GetMapping("/approve/{invoiceId}")
-    public String approve(@PathVariable("invoiceId") Long invoiceId){
+    public String approve(@PathVariable("invoiceId") Long invoiceId) {
 
         invoiceService.approve(invoiceId);
 

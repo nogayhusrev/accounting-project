@@ -18,9 +18,8 @@ public class InvoiceDtoConverter implements Converter<String, InvoiceDto> {
     }
 
 
-
     @Override
-    public InvoiceDto convert(String id){
+    public InvoiceDto convert(String id) {
         // it throws error if user selects "Select" even with @SneakyThrows
         if (id == null || id.isBlank())
             return null;

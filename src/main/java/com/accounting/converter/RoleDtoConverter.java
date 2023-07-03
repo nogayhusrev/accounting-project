@@ -17,9 +17,9 @@ public class RoleDtoConverter implements Converter<String, RoleDto> {
         this.roleService = roleService;
     }
 
-//    @SneakyThrows
+    //    @SneakyThrows
     @Override
-    public RoleDto convert(String id){
+    public RoleDto convert(String id) {
         // it throws error if user selects "Select" even with @SneakyThrows
         if (id == null || id.isBlank())
             return null;

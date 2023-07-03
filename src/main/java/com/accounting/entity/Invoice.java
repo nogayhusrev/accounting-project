@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "invoices")
 @Where(clause = "is_deleted=false")
-public class Invoice extends BaseEntity{
+public class Invoice extends BaseEntity {
 
     private String invoiceNo;
 

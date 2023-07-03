@@ -14,7 +14,7 @@ public class CurrencyResponse {
     private Usd usd;
 
 
-   @Data
+    @Data
     public static class Usd {
         private BigDecimal eur;
         private BigDecimal gbp;

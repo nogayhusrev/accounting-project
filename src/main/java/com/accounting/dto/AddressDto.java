@@ -21,7 +21,4 @@ public class AddressDto {
     private String zipCode;
 
 
-
-
-
 }

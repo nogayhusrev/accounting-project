@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "clients_vendors")
 @Where(clause = "is_deleted=false")
-public class ClientVendor extends BaseEntity{
+public class ClientVendor extends BaseEntity {
 
     private String clientVendorName;
     private String phone;

@@ -27,7 +27,8 @@ public class CompanyDto {
 
     @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$" // +111 (202) 555-0125  +1 (202) 555-0125
             + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?){2}\\d{3}$"                                  // +111 123 456 789
-            + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?)(\\d{2}[ ]?){2}\\d{2}$", message = "Phone number is required field and may be in any valid phone number format.")// +111 123 45 67 89
+            + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?)(\\d{2}[ ]?){2}\\d{2}$", message = "Phone number is required field and may be in any valid phone number format.")
+// +111 123 45 67 89
     private String phone;
 
     @NotBlank(message = "Website is a required field.")
@@ -39,10 +40,6 @@ public class CompanyDto {
     private AddressDto address;
 
     private CompanyStatus companyStatus;
-
-
-
-
 
 
 }

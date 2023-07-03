@@ -27,7 +27,7 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public CurrencyDto getExchangeRates() {
         CurrencyResponse currency = currencyClient.getUsdBasedCurrencies();
-        CurrencyDto currencyDto= CurrencyDto.builder()
+        CurrencyDto currencyDto = CurrencyDto.builder()
                 .euro(currency.getUsd().getEur())
                 .britishPound(currency.getUsd().getGbp())
                 .indianRupee(currency.getUsd().getInr())

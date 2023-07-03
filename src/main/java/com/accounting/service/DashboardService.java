@@ -8,5 +8,6 @@ import java.util.Map;
 public interface DashboardService {
 
     Map<String, BigDecimal> getSummaryNumbers();
+
     CurrencyDto getExchangeRates();
 }
