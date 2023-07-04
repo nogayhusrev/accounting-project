@@ -29,10 +29,13 @@ public class Country {
 
     @JsonProperty("name")
     public String name;
+
     @JsonProperty("iso3")
     public String iso3;
+
     @JsonProperty("iso2")
     public String iso2;
+
     @JsonProperty("states")
     @Valid
     public List<State> states;

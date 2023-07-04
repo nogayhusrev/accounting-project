@@ -66,7 +66,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void update(ProductDto productDto, Long productId) {
         productDto.setId(productId);
-        productDto.setQuantityInStock(productRepository.findById(productId).get().getQuantityInStock());
         productRepository.save(mapperUtil.convert(productDto, new Product()));
     }
 
