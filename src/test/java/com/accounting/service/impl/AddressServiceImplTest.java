@@ -22,7 +22,7 @@ class AddressServiceImplTest {
 
     @Test
     @DisplayName("Get Countries And States From Api")
-    void getAllCountries() {
+    void getAllCountries_Test() {
 
         Country country = new Country();
 

@@ -2,10 +2,7 @@ package com.accounting.controller;
 
 
 import com.accounting.client.AddressClient;
-import com.accounting.dto.addressApi.AddressApiCountryStateResponse;
 import com.accounting.service.AddressService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,5 +1,7 @@
+
 package com.accounting.dto.addressApi;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -7,28 +9,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.Generated;
-import javax.validation.Valid;
-import java.util.List;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "error",
-        "msg",
-        "data"
+    "country"
 })
 @Generated("jsonschema2pojo")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressApiCountryStateResponse {
+public class CountryAndItsStatesPOSTRequest {
 
-    @JsonProperty("error")
-    public Boolean error;
-    @JsonProperty("msg")
-    public String msg;
-    @JsonProperty("data")
-    @Valid
-    public List<Country> countries;
+    @JsonProperty("country")
+    public String country;
 
 }

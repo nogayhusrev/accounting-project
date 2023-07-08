@@ -36,5 +36,12 @@ public class ReportingController {
         return "/report/profit-loss-report";
     }
 
+    @GetMapping("/logs")
+    public String getLogs(Model model) {
+
+
+        return "/report/logs";
+    }
+
 
 }

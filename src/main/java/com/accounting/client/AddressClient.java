@@ -1,20 +1,28 @@
 package com.accounting.client;
 
 
-import com.accounting.dto.addressApi.AddressApiCountryStateResponse;
+import com.accounting.dto.addressApi.CountriesAndStatesGETResponse;
+import com.accounting.dto.addressApi.CountryAndItsStatesPOSTRequest;
+import com.accounting.dto.addressApi.CountryAndItsStatesPOSTResponse;
+import feign.Headers;
+import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient(name = "address-api", url = "https://countriesnow.space/api/v0.1/countries/states")
 public interface AddressClient {
 
 
     @GetMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
-    AddressApiCountryStateResponse getAddressApiCountryStateResponse();
+    CountriesAndStatesGETResponse getCountriesAndStatesGETResponse();
 
 
-//    @PostMapping(value = "/states", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    Respone getAddressApiCountryResponse(@RequestBody AddressApiCountryStateRequest addressApiCountryStateRequest);
+    @PostMapping
+    @Headers("Content-Type: application/json")
+    @RequestLine("POST /states")
+    CountryAndItsStatesPOSTResponse getCountryAndItsStatesPOSTResponse(@SpringQueryMap CountryAndItsStatesPOSTRequest countryAndItsStatesPOSTRequest);
 
 }

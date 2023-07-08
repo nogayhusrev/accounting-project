@@ -23,7 +23,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<Country> getAllCountries() {
 
-        List<Country> countries = addressClient.getAddressApiCountryStateResponse().getCountries();
+        List<Country> countries = addressClient.getCountriesAndStatesGETResponse().getCountries();
 
         countries =countries.stream().sorted(Comparator.comparing(country -> country.name)).collect(Collectors.toList());
 
