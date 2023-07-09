@@ -81,6 +81,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long userId) {
+        UserDto userDto = findById(userId);
+
+        if (userDto.getRole().getDescription().equals("Admin") && adminCount(userDto) == 1)
+            throw new IllegalStateException("USER IS ONLY ADMIN, CANNOT BE DELETED");
+
         User user = userRepository.findById(userId).get();
         user.setUsername(user.getUsername() + "-" + user.getId() + " DELETED");
 
