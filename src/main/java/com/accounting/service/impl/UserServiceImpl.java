@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     public void update(UserDto userDto, Long userId) {
         User user = userRepository.findUserById(userId);
         userDto.setId(user.getId());
-        userRepository.save(mapperUtil.convert(user, new User()));
+        userRepository.save(mapperUtil.convert(userDto, new User()));
     }
 
     @Override

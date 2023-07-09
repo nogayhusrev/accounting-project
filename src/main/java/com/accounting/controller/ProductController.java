@@ -113,7 +113,7 @@ public class ProductController {
     public String update(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, @PathVariable Long productId, Model model) {
 
         if (productService.isExist(productDto, productId)) {
-            bindingResult.rejectValue("name", " ", "This category already exists.");
+            bindingResult.rejectValue("name", " ", "This product already exists.");
         }
 
         if (bindingResult.hasErrors()) {
@@ -126,7 +126,11 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{productId}")
-    public String delete(@PathVariable("productId") Long productId) {
+    public String delete(@PathVariable("productId") Long productId) throws Exception {
+        if (productService.findById(productId).getQuantityInStock() > 0) {
+            throw new Exception("This Products has quantity in stock.");
+        }
+
         productService.delete(productId);
         return "redirect:/products/list";
     }
