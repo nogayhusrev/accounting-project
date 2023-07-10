@@ -1,5 +1,6 @@
 package com.accounting.service.impl;
 
+
 import com.accounting.dto.UserDto;
 import com.accounting.entity.User;
 import com.accounting.entity.common.UserPrincipal;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityServiceImpl implements SecurityService {
     private final UserRepository userRepository;
-
     private final UserService userService;
 
     public SecurityServiceImpl(UserRepository userRepository, UserService userService) {
@@ -36,8 +36,6 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public UserDto getCurrentUser() {
-
-
         return userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }

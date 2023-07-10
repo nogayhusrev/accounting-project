@@ -56,6 +56,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public CategoryDto findByName(String name) {
+        Category category = categoryRepository.findAll().stream()
+                .filter(savedCategory -> savedCategory.getDescription().equalsIgnoreCase(name))
+                .findFirst().get();
+
+        return mapperUtil.convert(category, new CategoryDto());
+    }
+
+    @Override
     public void save(CategoryDto categoryDto) {
         Category category = mapperUtil.convert(categoryDto, new Category());
         Company company = mapperUtil.convert(userService.getCurrentUser().getCompany(), new Company());
@@ -101,8 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .count();
 
 
-
-        return  idCheck > 0;
+        return idCheck > 0;
     }
 
     @Override

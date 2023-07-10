@@ -21,15 +21,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final MapperUtil mapperUtil;
-    private final SecurityService securityService;
-
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, @Lazy SecurityService securityService, PasswordEncoder passwordEncoder) {
+    private final SecurityService securityService;
+
+    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, PasswordEncoder passwordEncoder, @Lazy SecurityService securityService) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
-        this.securityService = securityService;
         this.passwordEncoder = passwordEncoder;
+        this.securityService = securityService;
     }
 
 
@@ -71,6 +71,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto findByName(String username) {
+        User user = userRepository.findAll().stream()
+                .filter(savedUser -> savedUser.getUsername().equalsIgnoreCase(username))
+                .findFirst().get();
+
+        return mapperUtil.convert(user, new UserDto());
+    }
+
+    @Override
     public void save(UserDto userDto) {
         User user = mapperUtil.convert(userDto, new User());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -81,6 +90,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long userId) {
+
         UserDto userDto = findById(userId);
 
         if (userDto.getRole().getDescription().equals("Admin") && adminCount(userDto) == 1)
@@ -88,6 +98,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(userId).get();
         user.setUsername(user.getUsername() + "-" + user.getId() + " DELETED");
+
 
         user.setIsDeleted(true);
         userRepository.save(user);

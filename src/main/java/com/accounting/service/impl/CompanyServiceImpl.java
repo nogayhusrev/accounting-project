@@ -46,6 +46,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public CompanyDto findByName(String name) {
+        Company company = companyRepository.findAll().stream()
+                .filter(savedCompany -> savedCompany.getTitle().equalsIgnoreCase(name))
+                .findFirst().get();
+
+        return mapperUtil.convert(company, new CompanyDto());
+
+
+    }
+
+    @Override
     public void save(CompanyDto companyDto) {
         companyDto.setCompanyStatus(CompanyStatus.PASSIVE);
         companyRepository.save(mapperUtil.convert(companyDto, new Company()));
@@ -54,7 +65,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void delete(Long companyId) {
-
+        throw new IllegalStateException("NOT IMPLEMENTED");
     }
 
     @Override

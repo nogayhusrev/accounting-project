@@ -1,6 +1,5 @@
 package com.accounting.service.impl;
 
-import com.accounting.service.PaymentService;
 import com.accounting.dto.CompanyDto;
 import com.accounting.dto.PaymentDto;
 import com.accounting.entity.Company;
@@ -8,6 +7,7 @@ import com.accounting.entity.Payment;
 import com.accounting.enums.Months;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.PaymentRepository;
+import com.accounting.service.PaymentService;
 import com.accounting.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +59,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 
         if (payments.size() == 0) {
-            for (Months month : Months.values()){
+            for (Months month : Months.values()) {
                 Payment payment = new Payment();
                 payment.setMonth(month);
                 payment.setYear(LocalDate.now().withYear(year));

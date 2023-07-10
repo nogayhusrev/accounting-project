@@ -43,6 +43,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDto findByName(String name) {
+        Product product = productRepository.findAll().stream()
+                .filter(savedProduct -> savedProduct.getName().equalsIgnoreCase(name))
+                .findFirst().get();
+
+        return mapperUtil.convert(product, new ProductDto());
+    }
+
+    @Override
     public void save(ProductDto productDto) {
         Product product = mapperUtil.convert(productDto, new Product());
         product.setQuantityInStock(0);

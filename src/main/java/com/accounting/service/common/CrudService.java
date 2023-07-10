@@ -9,6 +9,8 @@ public interface CrudService<T, ID> {
 
     List<T> findAll();
 
+    T findByName(String name);
+
     void save(T t);
 
     void delete(ID id);

@@ -5,7 +5,6 @@ import com.accounting.dto.addressApi.Country;
 import com.accounting.service.AddressService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class AddressServiceImpl implements AddressService {
 
         List<Country> countries = addressClient.getCountriesAndStatesGETResponse().getCountries();
 
-        countries =countries.stream().sorted(Comparator.comparing(country -> country.name)).collect(Collectors.toList());
+        countries = countries.stream().sorted(Comparator.comparing(country -> country.name)).collect(Collectors.toList());
 
         return countries;
     }

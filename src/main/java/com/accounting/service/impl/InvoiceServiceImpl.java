@@ -3,7 +3,6 @@ package com.accounting.service.impl;
 import com.accounting.dto.ClientVendorDto;
 import com.accounting.dto.InvoiceDto;
 import com.accounting.dto.InvoiceProductDto;
-import com.accounting.entity.ClientVendor;
 import com.accounting.entity.Company;
 import com.accounting.entity.Invoice;
 import com.accounting.enums.ClientVendorType;
@@ -61,6 +60,15 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .sorted(Comparator.comparing(Invoice::getInvoiceNo).reversed())
                 .map(invoice -> mapperUtil.convert(invoice, new InvoiceDto()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public InvoiceDto findByName(String invoiceNo) {
+        Invoice invoice = invoiceRepository.findAll().stream()
+                .filter(savedInvoice -> savedInvoice.getInvoiceNo().equals(invoiceNo))
+                .findFirst().get();
+
+        return mapperUtil.convert(invoice, new InvoiceDto());
     }
 
     @Override
@@ -129,6 +137,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void save(InvoiceDto invoiceDto, InvoiceType invoiceType) {
         invoiceDto.setInvoiceType(invoiceType);
         invoiceDto.setInvoiceProducts(new ArrayList<>());
+        invoiceDto.setDate(LocalDate.now());
         invoiceDto.setInvoiceStatus(InvoiceStatus.AWAITING_APPROVAL);
         invoiceDto.setCompany(userService.getCurrentUser().getCompany());
         invoiceRepository.save(mapperUtil.convert(invoiceDto, new Invoice()));
@@ -185,6 +194,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceProductService.findInvoiceProductsByInvoiceId(invoiceId)
                 .forEach(invoiceProductDto -> invoiceProductService.delete(invoiceProductDto.getId()));
         invoice.setIsDeleted(true);
+        invoice.setInvoiceNo(invoice.getInvoiceNo() + "_DELETED");
         invoiceRepository.save(invoice);
     }
 
@@ -192,19 +202,28 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void update(InvoiceDto invoiceDto, Long invoiceId) {
         Invoice invoice = invoiceRepository.findById(invoiceId).get();
-        invoice.setClientVendor(mapperUtil.convert(invoiceDto.getClientVendor(), new ClientVendor()));
-        invoiceRepository.save(invoice);
+
+        invoiceDto.setInvoiceNo(invoice.getInvoiceNo());
+
+        invoiceRepository.save(mapperUtil.convert(invoiceDto, new Invoice()));
 
     }
 
     @Override
-    public boolean isExist(InvoiceDto invoiceDto, Long aLong) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+    public boolean isExist(InvoiceDto invoiceDto, Long invoiceId) {
+        Long idCheck = invoiceRepository.findAll().stream()
+                .filter(savedInvoice -> savedInvoice.getInvoiceNo().equalsIgnoreCase(invoiceDto.getInvoiceNo()))
+                .filter(savedProduct -> savedProduct.getId() != invoiceId)
+                .count();
+
+        return idCheck > 0;
     }
 
     @Override
     public boolean isExist(InvoiceDto invoiceDto) {
-        throw new IllegalStateException("NOT IMPLEMENTED");
+        return invoiceRepository.findAll().stream()
+                .filter(savedInvoice -> savedInvoice.getInvoiceNo().equalsIgnoreCase(savedInvoice.getInvoiceNo()))
+                .count() > 0;
     }
 
     private void calculateInvoiceDetails(InvoiceDto invoiceDto) {
@@ -219,7 +238,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         List<InvoiceProductDto> invoiceProductsOfInvoice = invoiceProductService.findInvoiceProductsByInvoiceId(invoice.getId());
         return invoiceProductsOfInvoice.stream()
                 .map(p -> p.getPrice()
-                        .multiply(BigDecimal.valueOf((long) p.getQuantity())))
+                        .multiply(BigDecimal.valueOf(p.getQuantity())))
                 .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
     }
 

@@ -45,6 +45,17 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
+    public ClientVendorDto findByName(String clientVendorName) {
+        ClientVendor clientVendor = clientVendorRepository.findAll().stream()
+                .filter(savedClientVendor -> savedClientVendor.getClientVendorName().equalsIgnoreCase(clientVendorName))
+                .findFirst().get();
+
+
+        return mapperUtil.convert(clientVendor, new ClientVendorDto());
+
+    }
+
+    @Override
     public void save(ClientVendorDto clientVendorDto) {
 
         clientVendorDto.setCompany(userService.getCurrentUser().getCompany());

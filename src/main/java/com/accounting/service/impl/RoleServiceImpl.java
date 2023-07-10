@@ -5,9 +5,7 @@ import com.accounting.entity.Role;
 import com.accounting.mapper.MapperUtil;
 import com.accounting.repository.RoleRepository;
 import com.accounting.service.RoleService;
-import com.accounting.service.SecurityService;
 import com.accounting.service.UserService;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,17 +16,14 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
     private final MapperUtil mapperUtil;
-
     private final UserService userService;
 
-    private final SecurityService securityService;
-
-    public RoleServiceImpl(RoleRepository roleRepository, MapperUtil mapperUtil, UserService userService, @Lazy SecurityService securityService) {
+    public RoleServiceImpl(RoleRepository roleRepository, MapperUtil mapperUtil, UserService userService) {
         this.roleRepository = roleRepository;
         this.mapperUtil = mapperUtil;
         this.userService = userService;
-        this.securityService = securityService;
     }
+
 
     @Override
     public RoleDto findById(Long roleId) {
@@ -56,6 +51,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDto> findAll() {
         throw new IllegalStateException("Not Implemented");
+    }
+
+    @Override
+    public RoleDto findByName(String name) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
     }
 
     @Override
