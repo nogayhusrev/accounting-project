@@ -79,7 +79,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDto updatePayment(Long id) {
+    public PaymentDto payPayment(Long id) {
 
         Payment payment = paymentRepository.findById(id).get();
         payment.setPaid(true);

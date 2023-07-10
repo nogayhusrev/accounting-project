@@ -12,5 +12,5 @@ public interface PaymentService {
 
     PaymentDto getPaymentById(Long id);
 
-    PaymentDto updatePayment(Long id);
+    PaymentDto payPayment(Long id);
 }

@@ -71,7 +71,7 @@
                                                             <td>
                                                                 <form action="#" method="post">
                                                                     <a  th:if="${!payment.isPaid}"
-                                                                        th:href="@{/payments/newpayment/{id}(id=${payment.id})}"
+                                                                        th:href="@{/payments/newPayment/{id}(id=${payment.id})}"
                                                                         class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
                                                                         type="submit" name="action" value="delete">Pay
                                                                     </a>

@@ -39,7 +39,7 @@ public class PaymentController {
     }
 
 
-    @GetMapping("/newpayment/{id}")
+    @GetMapping("/newPayment/{id}")
     public String checkout(@PathVariable("id") Long id, Model model) {
 
         PaymentDto dto = paymentService.getPaymentById(id);
@@ -53,12 +53,12 @@ public class PaymentController {
 
 
     @PostMapping("/charge/{id}")
-    public String charge(ChargeRequest chargeRequest, @PathVariable("id") Long id, Model model)
+    public String charge(ChargeRequest chargeRequest, @PathVariable("id") Long id)
             throws StripeException {
         chargeRequest.setDescription("Example charge");
         chargeRequest.setCurrency(ChargeRequest.Currency.EUR);
         stripeServiceImpl.charge(chargeRequest);
-        paymentService.updatePayment(id);
+        paymentService.payPayment(id);
         return "redirect:/payments/list";
     }
 
