@@ -27,32 +27,30 @@ public class LoggingAspect {
     /*  =========>>>  CONTROLLER LOGGING ASPECT  <<< =========  */
 
 
-    @Pointcut("execution(* com.accounting..*(..))")
-    public void controllerPointcut(){}
-
-    @Before("controllerPointcut()")
-    public void beforeControllerPointcut(JoinPoint joinPoint){
-        log.info("|| *** ===>>>LOG INFO<<<=== *** || Before || Method: {}, Arguments: {}, User: {}, Target: {}",
-                joinPoint.getSignature(), joinPoint.getArgs(),getUsername(), joinPoint.getTarget());
+    @Pointcut("execution(* com.nogayhusrev.accounting..*(..))")
+    public void controllerPointcut() {
     }
 
-    @AfterReturning(pointcut = "controllerPointcut()", returning = "results")
-    public void afterReturningControllerPointcut(JoinPoint joinPoint, Object results) {
-        log.info("|| *** ===>>>LOG INFO<<<=== *** || After Returning || Method: {}, User: {}, Results: {}"
-                , joinPoint.getSignature().toShortString()
-                , getUsername()
-                , results.toString());
+    @Before("controllerPointcut()")
+    public void beforeControllerPointcut(JoinPoint joinPoint) {
+        log.info("|| *** ===>>>BEFORE<<<=== *** || Method: {}, Arguments: {}, Target: {}",
+                joinPoint.getSignature(), joinPoint.getArgs(), joinPoint.getTarget());
+    }
+
+    @AfterReturning(pointcut = "controllerPointcut()")
+    public void afterReturningControllerPointcut(JoinPoint joinPoint) {
+
+        log.info("|| *** ===>>>AFTER RETURNING<<<=== *** || Method: {}"
+                , joinPoint.getSignature().toShortString());
     }
 
     @AfterThrowing(pointcut = "controllerPointcut()", throwing = "exception")
     public void afterThrowingControllerPointcut(JoinPoint joinPoint, Exception exception) {
-        log.error("|| *** ===>>>LOG ERROR<<<=== *** || After Throwing || Method: {}, User: {}, Results: {}"
+
+        log.error("|| *** ===>>>AFTER THROWING<<<=== *** || Method: {}, Results: {}"
                 , joinPoint.getSignature().toShortString()
-                , getUsername()
                 , exception.getMessage());
     }
-
-
 
 
 }

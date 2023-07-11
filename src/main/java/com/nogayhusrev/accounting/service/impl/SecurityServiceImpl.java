@@ -36,6 +36,8 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public UserDto getCurrentUser() {
-        return userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        return userService.findByUsername(SecurityContextHolder.getContext().
+                getAuthentication().getName());
     }
 }
