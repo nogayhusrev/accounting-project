@@ -1,7 +1,7 @@
 package com.accounting.service.impl;
 
-import com.accounting.dto.addressApi.Country;
-import lombok.extern.slf4j.Slf4j;
+import com.nogayhusrev.accounting.dto.addressApi.Country;
+import com.nogayhusrev.accounting.service.impl.AddressServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration

@@ -1,29 +1,23 @@
 package com.accounting.service.impl;
 
-import com.accounting.dto.CategoryDto;
-import com.accounting.dto.CompanyDto;
-import com.accounting.dto.UserDto;
-import com.accounting.entity.Category;
-import com.accounting.entity.Company;
-import com.accounting.mapper.MapperUtil;
-import com.accounting.repository.CategoryRepository;
-import com.accounting.service.CategoryService;
-import com.accounting.service.SecurityService;
-import com.accounting.service.UserService;
+import com.nogayhusrev.accounting.dto.CategoryDto;
+import com.nogayhusrev.accounting.dto.CompanyDto;
+import com.nogayhusrev.accounting.dto.UserDto;
+import com.nogayhusrev.accounting.entity.Category;
+import com.nogayhusrev.accounting.entity.Company;
+import com.nogayhusrev.accounting.mapper.MapperUtil;
+import com.nogayhusrev.accounting.repository.CategoryRepository;
+import com.nogayhusrev.accounting.service.UserService;
+import com.nogayhusrev.accounting.service.impl.CategoryServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
